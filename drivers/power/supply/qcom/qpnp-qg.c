@@ -3523,8 +3523,8 @@ static int get_batt_id_ohm(struct qpnp_qg *chip, u32 *batt_id_ohm)
 static int qg_load_battery_profile(struct qpnp_qg *chip)
 {
 	struct device_node *node = chip->dev->of_node;
-	struct device_node *batt_node, *profile_node;
-	int rc, tuple_len, len, i  = 0;
+	struct device_node *profile_node;
+	int rc, tuple_len, len, i = 0;
 #ifdef CONFIG_BATT_VERIFY_BY_DS28E16
 	union power_supply_propval pval = {0, };
 	if (!chip->dt.qg_page0_unused) {
@@ -3535,8 +3535,8 @@ static int qg_load_battery_profile(struct qpnp_qg *chip)
 #else
 	int avail_age_level = 0;
 #endif
-	batt_node = of_find_node_by_name(node, "qcom,battery-data");
-	if (!batt_node) {
+	chip->batt_node = of_find_node_by_name(node, "qcom,battery-data");
+	if (!chip->batt_node) {
 		pr_err("Batterydata not available\n");
 		return -ENXIO;
 	}
@@ -3553,12 +3553,12 @@ static int qg_load_battery_profile(struct qpnp_qg *chip)
 #ifdef CONFIG_K6_CHARGE
 		if (is_batt_vendor_swd) {
 			pr_err("is_batt_vendor_swd is %d\n", is_batt_vendor_swd);
-			profile_node = of_batterydata_get_best_profile(batt_node,
+			profile_node = of_batterydata_get_best_profile(chip->batt_node,
 							chip->batt_id_ohm / 1000, "K6_sunwoda_5020mah");
 			chip->profile_judge_done = true;
 		} else if (is_batt_vendor_nvt) {
 			pr_err("is_batt_vendor_nvt is %d\n", is_batt_vendor_nvt);
-			profile_node = of_batterydata_get_best_profile(batt_node,
+			profile_node = of_batterydata_get_best_profile(chip->batt_node,
 							chip->batt_id_ohm / 1000, "K6_nvt_5020mah");
 			chip->profile_judge_done = true;
 		}
@@ -3574,24 +3574,24 @@ static int qg_load_battery_profile(struct qpnp_qg *chip)
 				pr_err("qg_load_battery_profile : get page0 error.\n");
 			} else {
 				if ((pval.arrayval[0] == 'S') || (pval.arrayval[0] == 'X')) {
-					profile_node = of_batterydata_get_best_profile(batt_node,
+					profile_node = of_batterydata_get_best_profile(chip->batt_node,
 						chip->batt_id_ohm / 1000, "G7BSWDBM4P_4500mAh");
 					chip->profile_judge_done = true;
 				} else if ((pval.arrayval[0] == 'N') || (pval.arrayval[0] == 'A')) {
-					profile_node = of_batterydata_get_best_profile(batt_node,
+					profile_node = of_batterydata_get_best_profile(chip->batt_node,
 						chip->batt_id_ohm / 1000, "G7BNVTBM4P_4500mAh");
 					chip->profile_judge_done = true;
-				} 
+				}
 			}
 		}
 #endif
 		if (chip->profile_judge_done == false) {
 			if (chip->profile_loaded == false) {
 #ifdef CONFIG_K6_CHARGE
-				profile_node = of_batterydata_get_best_profile(batt_node,
+				profile_node = of_batterydata_get_best_profile(chip->batt_node,
 					chip->batt_id_ohm / 1000, "K6_sunwoda_5020mah");
 #else
-				profile_node = of_batterydata_get_best_profile(batt_node,
+				profile_node = of_batterydata_get_best_profile(chip->batt_node,
 					chip->batt_id_ohm / 1000, "G7BSWDBM4P_4500mAh");
 #endif
 			} else {
@@ -3599,7 +3599,7 @@ static int qg_load_battery_profile(struct qpnp_qg *chip)
 			}
 		}
 	} else {
-		profile_node = of_batterydata_get_best_profile(batt_node,
+		profile_node = of_batterydata_get_best_profile(chip->batt_node,
 			chip->batt_id_ohm / 1000, NULL);
 		if (IS_ERR(profile_node)) {
 			rc = PTR_ERR(profile_node);
@@ -3629,7 +3629,7 @@ static int qg_load_battery_profile(struct qpnp_qg *chip)
 			chip->batt_age_level = avail_age_level;
 		}
 	} else {
-	profile_node = of_batterydata_get_best_profile(batt_node,
+	profile_node = of_batterydata_get_best_profile(chip->batt_node,
 				chip->batt_id_ohm / 1000, NULL);
 	}
 
