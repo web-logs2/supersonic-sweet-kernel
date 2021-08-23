@@ -1,4 +1,5 @@
 /* Copyright (c) 2018, The Linux Foundation. All rights reserved.
+ * Copyright (C) 2021 XiaoMi, Inc.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -59,23 +60,5 @@
 #define CONFIG_SND_SOC_WCD937X 1
 #define CONFIG_SND_SOC_WCD937X_SLAVE 1
 #define CONFIG_SND_EVENT 1
-#define CONFIG_SOUND_CONTROL 1
-
-#ifdef CONFIG_MACH_XIAOMI_COURBET
-#include "xiaomi/courbetconf.h"
-#endif
-#ifdef CONFIG_MACH_XIAOMI_DAVINCI
-#include "xiaomi/davinciconf.h"
-#endif
-#ifdef CONFIG_MACH_XIAOMI_PHOENIX
-#include "xiaomi/phoenixconf.h"
-#endif
-#ifdef CONFIG_MACH_XIAOMI_SWEET
-#include "xiaomi/sweetconf.h"
-#endif
-#ifdef CONFIG_MACH_XIAOMI_TOCO
-#include "xiaomi/tococonf.h"
-#endif
-#ifdef CONFIG_MACH_XIAOMI_TUCANA
-#include "xiaomi/tucanaconf.h"
-#endif
+#define CONFIG_SND_SOC_TFA9874 1
+#define CONFIG_SND_SMARTPA_AW882XX 1

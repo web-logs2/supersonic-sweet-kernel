@@ -1,5 +1,9 @@
 /** Filename: Tfa9872_TfaFieldnames.h
+<<<<<<< HEAD
  *  This file was generated automatically on 10/11/16 at 10:19:27.
+=======
+ *  This file was generated automatically on 10/11/16 at 10:19:27. 
+>>>>>>> a14acd5b7a89 (Import techpack/audio changes from MiCode)
  *  Source file: TFA9872N1B2_DefaultI2CSettings -v16.xlsx
  */
 
@@ -1216,4 +1220,8 @@ enum TFA9872_irq {
 	{ 39, "STVDDPH"},\
 	{ 40, "40"},\
 };
+<<<<<<< HEAD
 #endif /* _TFA9872_TFAFIELDNAMES_H */
+=======
+#endif /* _TFA9872_TFAFIELDNAMES_H */
+>>>>>>> a14acd5b7a89 (Import techpack/audio changes from MiCode)

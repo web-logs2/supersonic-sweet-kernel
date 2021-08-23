@@ -26,7 +26,11 @@
 #define TFA98XXPARAMETERS_H_
 
 //#include "config.h"
+<<<<<<< HEAD
 // workaround for Visual Studio:
+=======
+// workaround for Visual Studio: 
+>>>>>>> a14acd5b7a89 (Import techpack/audio changes from MiCode)
 // fatal error C1083: Cannot open include file: 'config.h': No such file or directory
 #ifdef __KERNEL__
 #include <linux/types.h>
@@ -117,10 +121,17 @@ typedef struct nxpTfaDspMem {
 */
 typedef struct {
 	int a2;
+<<<<<<< HEAD
 	int a1;
 	int b2;
 	int b1;
 	int b0;
+=======
+	int a1;	
+	int b2;	
+	int b1;	
+	int b0;	
+>>>>>>> a14acd5b7a89 (Import techpack/audio changes from MiCode)
 }nxpTfaBiquad_t;
 
 typedef struct nxpTfaBiquadOld {
@@ -167,7 +178,11 @@ typedef struct nxpTfaFilter {
   float gain;
 } nxpTfaFilter_t ;  //8 * float + int32 + byte == 37
 
+<<<<<<< HEAD
 /*
+=======
+/* 
+>>>>>>> a14acd5b7a89 (Import techpack/audio changes from MiCode)
  * biquad params for calculation
 */
 
@@ -438,9 +453,15 @@ typedef struct nxpTfaVolumeStep2File {
  */
 typedef struct nxpTfaVolumeStepMax2File {
 	nxpTfaHeader_t hdr;
+<<<<<<< HEAD
 	uint8_t version[3];
 	uint8_t NrOfVsteps;
 	uint8_t vstepsBin[];
+=======
+	uint8_t version[3]; 
+	uint8_t NrOfVsteps;
+	uint8_t vstepsBin[]; 
+>>>>>>> a14acd5b7a89 (Import techpack/audio changes from MiCode)
 }nxpTfaVolumeStepMax2File_t;
 
 /*
@@ -449,9 +470,15 @@ typedef struct nxpTfaVolumeStepMax2File {
  * This can only be used to find the messagetype of the vstep (without header)
  */
 typedef struct nxpTfaVolumeStepMax2_1File {
+<<<<<<< HEAD
 	uint8_t version[3];
 	uint8_t NrOfVsteps;
 	uint8_t vstepsBin[];
+=======
+	uint8_t version[3]; 
+	uint8_t NrOfVsteps;
+	uint8_t vstepsBin[]; 
+>>>>>>> a14acd5b7a89 (Import techpack/audio changes from MiCode)
 }nxpTfaVolumeStepMax2_1File_t;
 
 struct nxpTfaVolumeStepRegisterInfo {

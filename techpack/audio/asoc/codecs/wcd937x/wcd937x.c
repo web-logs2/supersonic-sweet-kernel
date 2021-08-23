@@ -136,10 +136,6 @@ static int wcd937x_init_reg(struct snd_soc_codec *codec)
 	snd_soc_update_bits(codec, WCD937X_MICB1_TEST_CTL_1, 0xFF, 0xFA);
 	snd_soc_update_bits(codec, WCD937X_MICB2_TEST_CTL_1, 0xFF, 0xFA);
 	snd_soc_update_bits(codec, WCD937X_MICB3_TEST_CTL_1, 0xFF, 0xFA);
-#if defined(CONFIG_TARGET_PRODUCT_K9A) || defined(CONFIG_SND_SOC_AWINIC_AW882XX)
-	snd_soc_update_bits(codec, WCD937X_MICB2_TEST_CTL_2, 0xFF, 0x01);
-	snd_soc_update_bits(codec, WCD937X_MICB2_TEST_CTL_3, 0xFF, 0x24);
-#endif
 	return 0;
 }
 
@@ -2734,6 +2730,7 @@ static int wcd937x_bind(struct device *dev)
 	struct wcd937x_pdata *pdata = NULL;
 	struct wcd_ctrl_platform_data *plat_data = NULL;
 
+	dev_dbg(dev, "%s() enter\n", __func__);
 	wcd937x = kzalloc(sizeof(struct wcd937x_priv), GFP_KERNEL);
 	if (!wcd937x)
 		return -ENOMEM;
@@ -2959,9 +2956,12 @@ static int wcd937x_probe(struct platform_device *pdev)
 	struct component_match *match = NULL;
 	int ret;
 
+	pr_info("%s() enter\n", __func__);
 	ret = wcd937x_add_slave_components(&pdev->dev, &match);
-	if (ret)
+	if (ret) {
+		pr_info("%s() exit with %d\n", __func__, ret);
 		return ret;
+	}
 
 	return component_master_add_with_match(&pdev->dev,
 					&wcd937x_comp_ops, match);

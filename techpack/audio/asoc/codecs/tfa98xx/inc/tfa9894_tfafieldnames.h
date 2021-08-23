@@ -1,5 +1,9 @@
 /** Filename: tfa9894_tfaFieldnames.h
+<<<<<<< HEAD
  *  This file was generated automatically on 09/06/17 at 14:51:37.
+=======
+ *  This file was generated automatically on 09/06/17 at 14:51:37. 
+>>>>>>> a14acd5b7a89 (Import techpack/audio changes from MiCode)
  *  Source file: TFA9894_N1A1_I2C_RegisterMap.xlsx
  */
 

@@ -11,7 +11,12 @@ endif
 ifeq ($(KERNEL_BUILD), 1)
 	# These are configurable via Kconfig for kernel-based builds
 	# Need to explicitly configure for Android-based builds
+<<<<<<< HEAD
 	AUDIO_ROOT := techpack/audio
+=======
+	AUDIO_BLD_DIR := $(ANDROID_BUILD_TOP)/kernel/msm-4.14
+	AUDIO_ROOT := $(AUDIO_BLD_DIR)/techpack/audio
+>>>>>>> a14acd5b7a89 (Import techpack/audio changes from MiCode)
 endif
 
 ifeq ($(KERNEL_BUILD), 0)
@@ -67,6 +72,7 @@ ifdef CONFIG_SND_SOC_TFA9874
 	#TFA98XX_OBJS += src/tfa_debug.o
 endif
 
+<<<<<<< HEAD
 LINUX_INC += -Iinclude/linux -Iinc
 
 INCS +=	$(COMMON_INC) \
@@ -76,6 +82,15 @@ INCS +=	$(COMMON_INC) \
 
 EXTRA_CFLAGS += $(INCS)
 ccflags-y += $(INCS)
+=======
+LINUX_INC += -Iinclude/linux
+
+INCS +=	$(COMMON_INC) \
+	$(UAPI_INC) \
+	$(TFA_INC)
+
+EXTRA_CFLAGS += $(INCS)
+>>>>>>> a14acd5b7a89 (Import techpack/audio changes from MiCode)
 
 CDEFINES +=	-DANI_LITTLE_BYTE_ENDIAN \
 		-DANI_LITTLE_BIT_ENDIAN \
@@ -85,7 +100,17 @@ CDEFINES +=	-DANI_LITTLE_BYTE_ENDIAN \
 		-DPTT_SOCK_SVC_ENABLE \
 		-Wall\
 		-Werror\
+<<<<<<< HEAD
 		-D__linux__
+=======
+		-D__linux__ \
+		-DDEBUG
+
+
+ifneq (,$(filter $(TARGET_PRODUCT), davinci davinciin phoenix phoenixin tucana toco tocoin))
+	CDEFINES += -DTFA_NON_DSP_SOLUTION
+endif
+>>>>>>> a14acd5b7a89 (Import techpack/audio changes from MiCode)
 
 KBUILD_CPPFLAGS += $(CDEFINES)
 
@@ -113,3 +138,8 @@ endif
 # Module information used by KBuild framework
 obj-$(CONFIG_SND_SOC_TFA9874)    += tfa98xx_dlkm.o
 tfa98xx_dlkm-y := $(TFA98XX_OBJS)
+<<<<<<< HEAD
+=======
+# inject some build related information
+DEFINES += -DBUILD_TIMESTAMP=\"$(shell date -u +'%Y-%m-%dT%H:%M:%SZ')\"
+>>>>>>> a14acd5b7a89 (Import techpack/audio changes from MiCode)

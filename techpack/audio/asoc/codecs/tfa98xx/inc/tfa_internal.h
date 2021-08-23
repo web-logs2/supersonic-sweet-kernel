@@ -37,3 +37,7 @@ TFA_INTERNAL enum Tfa98xx_Error tfa98xx_check_rpc_status(struct tfa_device *tfa,
 TFA_INTERNAL enum Tfa98xx_Error tfa98xx_wait_result(struct tfa_device *tfa, int waitRetryCount);
 
 #endif /* __TFA_INTERNAL_H__ */
+<<<<<<< HEAD
+=======
+
+>>>>>>> a14acd5b7a89 (Import techpack/audio changes from MiCode)
