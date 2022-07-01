@@ -837,7 +837,7 @@ static int bolero_soc_codec_probe(struct snd_soc_codec *codec)
 			}
 		}
 	}
-	#ifdef CONFIG_SOUND_CONTROL
+#ifdef CONFIG_SOUND_CONTROL
 	sound_control_kobj = kobject_create_and_add("sound_control", kernel_kobj);
 	if (sound_control_kobj == NULL) {
 		pr_warn("%s kobject create failed!\n", __func__);
