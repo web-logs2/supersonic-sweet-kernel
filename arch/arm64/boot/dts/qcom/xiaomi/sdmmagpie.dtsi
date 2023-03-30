@@ -1,9 +1,3 @@
-/ {
-	aliases {
-		spi2 = &qupv3_se8_spi;
-	};
-};
-
 &firmware {
 	android {
 		vbmeta {
