@@ -14,9 +14,6 @@
 
 #include "sdmmagpie.dtsi"
 
-// Include non-overlayed xiaomi changes
-#include "xiaomi/pm6150.dtsi"
-
 / {
 	model = "Qualcomm Technologies, Inc. SDMMAGPIE SoC";
 	compatible = "qcom,sdmmagpie";
