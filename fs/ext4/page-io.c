@@ -382,7 +382,6 @@ static int io_submit_init_bio(struct ext4_io_submit *io,
 static int io_submit_add_bh(struct ext4_io_submit *io,
 			    struct inode *inode,
 			    struct page *pagecache_page,
-			    struct page *bounce_page,
 			    struct buffer_head *bh)
 {
 	int ret;
