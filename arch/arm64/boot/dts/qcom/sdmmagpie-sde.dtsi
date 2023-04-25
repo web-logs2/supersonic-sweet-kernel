@@ -194,6 +194,9 @@
 
 		qcom,sde-cdp-setting = <1 1>, <1 0>;
 
+		qcom,sde-qos-cpu-mask = <0x3>;
+		qcom,sde-qos-cpu-dma-latency = <300>;
+
 		/* offsets are relative to "mdp_phys + qcom,sde-off */
 
 		qcom,sde-reg-dma-off = <0>;
@@ -368,6 +371,9 @@
 		qcom,mdss-rot-qos-lut = <0x0 0x0 0x0 0x0>;
 		qcom,mdss-rot-danger-lut = <0x0 0x0>;
 		qcom,mdss-rot-safe-lut = <0x0000ffff 0x0000ffff>;
+
+		qcom,mdss-rot-qos-cpu-mask = <0xf>;
+		qcom,mdss-rot-qos-cpu-dma-latency = <75>;
 
 		qcom,mdss-default-ot-rd-limit = <32>;
 		qcom,mdss-default-ot-wr-limit = <32>;
@@ -550,6 +556,7 @@
 						00 00 00 00
 						00 00 00 80];
 		qcom,platform-regulator-settings = [1d 1d 1d 1d 1d];
+		qcom,panel-allow-phy-poweroff;
 		qcom,phy-supply-entries {
 			#address-cells = <1>;
 			#size-cells = <0>;
