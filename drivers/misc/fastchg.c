@@ -27,11 +27,7 @@
 #include <linux/string.h>
 #include <linux/module.h>
 
-<<<<<<< HEAD
 int force_fast_charge = 1;
-=======
-int force_fast_charge = 0;
->>>>>>> af15f65a5eb2 (drivers: misc: power: implement usb2 fast charge mode)
 
 static int __init get_fastcharge_opt(char *ffc)
 {
