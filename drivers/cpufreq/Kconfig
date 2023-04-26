@@ -243,28 +243,28 @@ if CPU_FREQ_GOV_SCHEDUTIL
 
 config SCHEDUTIL_UP_RATE_LIMIT_BIG
 	int "Default up rate-limit for schedutil on big cluster"
-	default 2000
+	default 0
 	help
 	  This sets schedutil's default frequency up rate-limit for big cluster in
 	  microseconds.
 
 config SCHEDUTIL_DOWN_RATE_LIMIT_BIG
 	int "Default down rate-limit for schedutil on big cluster"
-	default 2000
+	default 0
 	help
 	  This sets schedutil's default frequency down rate-limit in
 	  microseconds.
 
 config SCHEDUTIL_UP_RATE_LIMIT_LITTLE
 	int "Default up rate-limit for schedutil on little cluster"
-	default 2000
+	default 0
 	help
 	  This sets schedutil's default frequency up rate-limit for little cluster in
 	  microseconds.
 
 config SCHEDUTIL_DOWN_RATE_LIMIT_LITTLE
 	int "Default down rate-limit for schedutil on little cluster"
-	default 2000
+	default 0
 	help
 	  This sets schedutil's default frequency down rate-limit for little cluster in
 	  microseconds.
@@ -305,13 +305,13 @@ if CPU_INPUT_BOOST
 
 config INPUT_BOOST_DURATION_MS
 	int "Input boost duration"
-	default "100"
+	default "0"
 	help
 	  Input boost duration in milliseconds.
 
 config WAKE_BOOST_DURATION_MS
 	int "Wake boost duration"
-	default "1000"
+	default "0"
 	help
 	  Wake boost duration in milliseconds.
 
