@@ -1464,7 +1464,7 @@ static int fg_gen4_adjust_ki_coeff_full_soc(struct fg_gen4_chip *chip,
 						int batt_temp)
 {
 	struct fg_dev *fg = &chip->fg;
-	int rc, ki_coeff_full_soc_norm = 0, ki_coeff_full_soc_low = 0;
+	int rc, ki_coeff_full_soc_norm, ki_coeff_full_soc_low;
 	u8 val;
 
 	if ((batt_temp < 0) ||
@@ -4679,7 +4679,7 @@ static int fg_awake_cb(struct votable *votable, void *data, int awake,
 	struct fg_dev *fg = data;
 
 	if (awake)
-		pm_wakeup_event(fg->dev, 500);
+		pm_stay_awake(fg->dev);
 	else
 		pm_relax(fg->dev);
 

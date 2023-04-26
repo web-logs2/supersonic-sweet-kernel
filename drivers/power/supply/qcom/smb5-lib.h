@@ -9,8 +9,6 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- *
- * Copyright (c) 2022 Qualcomm Innovation Center, Inc. All rights reserved.
  */
 
 #ifndef __SMB5_CHARGER_H
@@ -111,7 +109,6 @@ enum print_reason {
 #define HVDCP3_START_ICL_VOTER	"HVDCP3_START_ICL_VOTER"
 #define DCIN_AICL_VOTER			"DCIN_AICL_VOTER"
 #define OVERHEAT_LIMIT_VOTER		"OVERHEAT_LIMIT_VOTER"
-#define GPIO_DCIN_VOTER			"GPIO_DCIN_VOTER"
 
 /* use for QC3P5 */
 #define QC3P5_VOTER			"QC3P5_VOTER"
@@ -138,9 +135,8 @@ enum print_reason {
 #ifdef CONFIG_K6_CHARGE
 #define PD_UNVERIFED_VOLTAGE		4450000
 #else
-#define PD_UNVERIFED_VOLTAGE		4450000
+#define PD_UNVERIFED_VOLTAGE		4400000
 #endif
-
 /* thermal micros */
 #define MAX_TEMP_LEVEL		16
 /* percent of ICL compared to base 5V for different PD voltage_min voltage */
@@ -169,11 +165,6 @@ enum print_reason {
 /* defined for un_compliant Type-C cable */
 #define CC_UN_COMPLIANT_START_DELAY_MS	700
 
-#define REVERSE_BOOST_WORK_RECHECK_DELAY_MS	100
-#define REVERSE_BOOST_WORK_START_DELAY_MS	300
-#define REVERSE_BOOST_MIN_IBAT_MA		100
-#define REVERSE_BOOST_MAX_IBUS_MA		200
-
 #define VBAT_TO_VRAW_ADC(v)		div_u64((u64)v * 1000000UL, 194637UL)
 
 #define ITERM_LIMITS_PMI632_MA		5000
@@ -183,7 +174,7 @@ enum print_reason {
 #define SDP_100_MA			100000
 #define SDP_CURRENT_UA			500000
 #define CDP_CURRENT_UA			1500000
-#define DCP_CURRENT_UA			1600000
+#define DCP_CURRENT_UA			2000000
 #define HVDCP_CURRENT_UA		3000000
 #define HVDCP_CLASS_B_CURRENT_UA		3100000
 #define HVDCP2_CURRENT_UA		1500000
@@ -211,6 +202,7 @@ enum print_reason {
 #define MAX_COUNT_OF_IBAT_STEP			2
 #endif
 
+
 #define STEP_CHG_DELAYED_MONITOR_MS			15000
 #define STEP_CHG_DELAYED_QUICK_MONITOR_MS			5000
 #define STEP_CHG_DELAYED_START_MS			100
@@ -223,7 +215,11 @@ enum print_reason {
 
 /* ffc related */
 #define NON_FFC_VFLOAT_VOTER			"NON_FFC_VFLOAT_VOTER"
+#ifdef CONFIG_K6_CHARGE
 #define NON_FFC_VFLOAT_UV			4450000
+#else
+#define NON_FFC_VFLOAT_UV			4400000
+#endif
 
 #define CP_COOL_THRESHOLD		150
 #define CP_WARM_THRESHOLD		450
@@ -638,7 +634,6 @@ struct smb_charger {
 	struct delayed_work	reduce_fcc_work;
 	struct delayed_work     status_report_work;
 	struct delayed_work	thermal_setting_work;
-	struct delayed_work	micro_usb_switch_work;
 
 	struct alarm		lpd_recheck_timer;
 	struct alarm		moisture_protection_alarm;
@@ -809,16 +804,6 @@ struct smb_charger {
 	int			dcin_uv_count;
 	ktime_t			dcin_uv_last_time;
 	int			last_wls_vout;
-	/* GPIO DCIN Supply */
-	int			micro_usb_gpio;
-	int			micro_usb_irq;
-	int			dc_9v_gpio;
-	int			dc_9v_irq;
-	int			usb_switch_gpio;
-	int			usb_hub_33v_en_gpio;
-	int			micro_usb_pre_state;
-	bool			dcin_uusb_over_gpio_en;
-	bool			aicl_disable;
 	/* charger type recheck */
 	int			recheck_charger;
 	int			precheck_charger_type;
@@ -881,9 +866,6 @@ struct smb_charger {
 	int 			qc3p5_power_limit_w;
 
 	bool			pps_fcc_therm_work_disabled;
-
-	bool			reverse_boost_wa;
-	int			reverse_count;
 };
 
 enum quick_charge_type {
@@ -956,7 +938,6 @@ irqreturn_t typec_or_rid_detection_change_irq_handler(int irq, void *data);
 irqreturn_t temp_change_irq_handler(int irq, void *data);
 irqreturn_t usbin_ov_irq_handler(int irq, void *data);
 irqreturn_t sdam_sts_change_irq_handler(int irq, void *data);
-irqreturn_t smb_micro_usb_irq_handler(int irq, void *data);
 int smblib_get_prop_input_suspend(struct smb_charger *chg,
 				union power_supply_propval *val);
 int smblib_get_prop_batt_present(struct smb_charger *chg,
@@ -1046,8 +1027,6 @@ int smblib_get_prop_charger_temp(struct smb_charger *chg,
 int smblib_get_prop_die_health(struct smb_charger *chg);
 int smblib_get_prop_smb_health(struct smb_charger *chg);
 int smblib_get_prop_connector_health(struct smb_charger *chg);
-int smblib_get_prop_input_current_max(struct smb_charger *chg,
-				  union power_supply_propval *val);
 int smblib_set_prop_thermal_overheat(struct smb_charger *chg,
 			       int therm_overheat);
 int smblib_get_prop_connector_temp(struct smb_charger *chg);

@@ -1,5 +1,4 @@
 /* Copyright (c) 2013-2020, The Linux Foundation. All rights reserved.
- * Copyright (C) 2021 XiaoMi, Inc.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -27,7 +26,6 @@
 #include <linux/input/qpnp-power-on.h>
 #include <linux/of_address.h>
 #include <linux/syscore_ops.h>
-#include <linux/crash_dump.h>
 
 #include <asm/cacheflush.h>
 #include <asm/system_misc.h>
@@ -49,7 +47,7 @@
 #define SCM_DLOAD_FULLDUMP		0X10
 #define SCM_EDLOAD_MODE			0X01
 #define SCM_DLOAD_CMD			0x10
-#define SCM_DLOAD_MINIDUMP		0xC0
+#define SCM_DLOAD_MINIDUMP		0X20
 #define SCM_DLOAD_BOTHDUMPS	(SCM_DLOAD_MINIDUMP | SCM_DLOAD_FULLDUMP)
 
 static int restart_mode;
@@ -87,10 +85,11 @@ static struct notifier_block panic_blk = {
 #define DL_MODE_PROP "qcom,msm-imem-download_mode"
 #ifdef CONFIG_RANDOMIZE_BASE
 #define KASLR_OFFSET_PROP "qcom,msm-imem-kaslr_offset"
+static struct kobject dload_kobj;
 #endif
 
 static struct kobject dload_kobj;
-static int dload_type = SCM_DLOAD_BOTHDUMPS;
+static int dload_type = SCM_DLOAD_FULLDUMP;
 static void *dload_mode_addr;
 static void *dload_type_addr;
 static bool dload_mode_enabled;
@@ -159,11 +158,6 @@ static void set_dload_mode(int on)
 	dload_mode_enabled = on;
 }
 
-static bool get_dload_mode(void)
-{
-	return dload_mode_enabled;
-}
-
 static void enable_emergency_dload_mode(void)
 {
 	int ret;
@@ -230,11 +224,6 @@ static void enable_emergency_dload_mode(void)
 {
 	pr_err("dload mode is not enabled on target\n");
 }
-
-static bool get_dload_mode(void)
-{
-	return false;
-}
 #endif
 
 static void scm_disable_sdi(void)
@@ -289,40 +278,26 @@ static void halt_spmi_pmic_arbiter(void)
 
 static void msm_restart_prepare(const char *cmd)
 {
-	bool need_warm_reset = false;
 #ifdef CONFIG_QCOM_DLOAD_MODE
 	/* Write download mode flags if we're panic'ing
 	 * Write download mode flags if restart_mode says so
 	 * Kill download mode if master-kill switch is set
 	 */
-	if (!is_kdump_kernel())
-		set_dload_mode(download_mode &&
+
+	set_dload_mode(download_mode &&
 			(in_panic || restart_mode == RESTART_DLOAD));
 #endif
-
-	if (qpnp_pon_check_hard_reset_stored()) {
-		/* Set warm reset as true when device is in dload mode */
-		if (get_dload_mode() ||
-			((cmd != NULL && cmd[0] != '\0') &&
-			!strcmp(cmd, "edl")))
-			need_warm_reset = true;
-	} else {
-		need_warm_reset = (get_dload_mode() ||
-				(cmd != NULL && cmd[0] != '\0'));
-	}
 
 	if (force_warm_reboot)
 		pr_info("Forcing a warm reset of the system\n");
 
 	/* Hard reset the PMIC unless memory contents must be maintained. */
-	if (force_warm_reboot || need_warm_reset)
+	if (force_warm_reboot || in_panic)
 		qpnp_pon_system_pwr_off(PON_POWER_OFF_WARM_RESET);
 	else
 		qpnp_pon_system_pwr_off(PON_POWER_OFF_HARD_RESET);
 
-	if (in_panic) {
-		qpnp_pon_set_restart_reason(PON_RESTART_REASON_PANIC);
-	} else if (cmd != NULL) {
+	if (cmd != NULL) {
 		if (!strncmp(cmd, "bootloader", 10)) {
 			qpnp_pon_set_restart_reason(
 				PON_RESTART_REASON_BOOTLOADER);
@@ -356,15 +331,10 @@ static void msm_restart_prepare(const char *cmd)
 				__raw_writel(0x6f656d00 | (code & 0xff),
 					     restart_reason);
 		} else if (!strncmp(cmd, "edl", 3)) {
-			if (0)
-				enable_emergency_dload_mode();
+			enable_emergency_dload_mode();
 		} else {
-			qpnp_pon_set_restart_reason(PON_RESTART_REASON_NORMAL);
 			__raw_writel(0x77665501, restart_reason);
 		}
-	} else {
-		qpnp_pon_set_restart_reason(PON_RESTART_REASON_NORMAL);
-		__raw_writel(0x77665501, restart_reason);
 	}
 
 	flush_cache_all();
@@ -705,8 +675,8 @@ skip_sysfs_create:
 
 	if (scm_is_call_available(SCM_SVC_PWR, SCM_IO_DEASSERT_PS_HOLD) > 0)
 		scm_deassert_ps_hold_supported = true;
-	if (!is_kdump_kernel())
-		set_dload_mode(download_mode);
+
+	set_dload_mode(download_mode);
 	if (!download_mode)
 		scm_disable_sdi();
 
