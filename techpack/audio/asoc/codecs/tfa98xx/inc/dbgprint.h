@@ -57,11 +57,7 @@
 #   define DEBUG2(x...) _DEBUG(2,x)
 #   define DEBUG3(x...) _DEBUG(3,x)
 #   define ERRORMSG(x...) _ERRORMSG(x)
-<<<<<<< HEAD
-#	define PRINT(x...)	printk(x)
-=======
 #	define PRINT(x...)	printk(x) 
->>>>>>> a14acd5b7a89 (Import techpack/audio changes from MiCode)
 #   define PRINT_ERROR(x...) printk(KERN_INFO PREFIX " **ERROR** " x)
 #   define PRINT_ASSERT(e)if ((e)) printk(KERN_ERR "PrintAssert:%s (%s:%d) error code:%d\n",__FUNCTION__,__FILE__,__LINE__, e)
 
@@ -97,11 +93,7 @@
 							if((stream = freopen("nxp_tfa.txt", "ab+", stdout)) == NULL) exit(-1);	\
 							printf(__VA_ARGS__);												\
 							freopen( "CON", "ab+", stdout );										\
-<<<<<<< HEAD
-						}
-=======
 						} 
->>>>>>> a14acd5b7a89 (Import techpack/audio changes from MiCode)
 */
 #	define PRINT_ERROR(...)	 fprintf(stderr,__VA_ARGS__)
 #	define PRINT_FILE(file,...)	fprintf(file,__VA_ARGS__)

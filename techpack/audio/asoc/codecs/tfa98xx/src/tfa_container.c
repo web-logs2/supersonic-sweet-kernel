@@ -38,11 +38,7 @@ static int float_to_int(uint32_t x)
 /*
  * check the container file
 */
-<<<<<<< HEAD
-enum tfa_error tfa_load_cnt(void *cnt, int length)
-=======
 enum tfa_error tfa_load_cnt(void *cnt, int length) 
->>>>>>> a14acd5b7a89 (Import techpack/audio changes from MiCode)
 {
 	nxpTfaContainer_t  *cntbuf = (nxpTfaContainer_t  *)cnt;
 
@@ -439,11 +435,7 @@ static enum Tfa98xx_Error tfaContWriteVstepMax2_One(struct tfa_device *tfa, stru
 	}
 
 	/*
-<<<<<<< HEAD
-	 * +sizeof(struct tfa_partial_msg_block) will allow to fit one
-=======
 	 * +sizeof(struct tfa_partial_msg_block) will allow to fit one 
->>>>>>> a14acd5b7a89 (Import techpack/audio changes from MiCode)
 	 * additonnal partial block If the partial update goes over the len of
 	 * a regular message ,we can safely write our block and check afterward
 	 * that we are over the size of a usual update
@@ -475,11 +467,7 @@ static enum Tfa98xx_Error tfaContWriteVstepMax2_One(struct tfa_device *tfa, stru
 				change = (uint16_t*) p;
 				*change = 0;
 				p += 2;
-<<<<<<< HEAD
-
-=======
 				
->>>>>>> a14acd5b7a89 (Import techpack/audio changes from MiCode)
 				for (i = 0;
 				     (i < 16) && (o < (old_msg->ParameterData + len));
 				    i++, n += 3, o += 3) {
@@ -503,11 +491,7 @@ static enum Tfa98xx_Error tfaContWriteVstepMax2_One(struct tfa_device *tfa, stru
 		if (trim == partial) {
 			pr_debug("No Change in message - discarding %d bytes\n", len);
 			len = 0;
-<<<<<<< HEAD
-
-=======
 			
->>>>>>> a14acd5b7a89 (Import techpack/audio changes from MiCode)
 		} else if (trim < (partial + len - 3)) {
 			pr_debug("Using partial update: %d -> %d bytes\n", len , (int)(trim-partial+3));
 
@@ -542,19 +526,11 @@ static enum Tfa98xx_Error tfaContWriteVstepMax2_One(struct tfa_device *tfa, stru
 			kmem_cache_free(tfa->cachep, buffer);
 		}
 	}
-<<<<<<< HEAD
-
-	if (partial)
-		kmem_cache_free(tfa->cachep, partial);
-
-	return err;
-=======
 	
 	if (partial)
 		kmem_cache_free(tfa->cachep, partial);
 
 	return err;	
->>>>>>> a14acd5b7a89 (Import techpack/audio changes from MiCode)
 }
 
 static enum Tfa98xx_Error tfaContWriteVstepMax2(struct tfa_device *tfa, nxpTfaVolumeStepMax2File_t *vp, int vstep_idx, int vstep_msg_idx)
@@ -603,11 +579,7 @@ static enum Tfa98xx_Error tfaContWriteVstepMax2(struct tfa_device *tfa, nxpTfaVo
 		if ((vstep_msg_idx >= TFA_MAX_VSTEP_MSG_MARKER) || (vstep_msg_idx == i)) {
 			err = tfaContWriteVstepMax2_One(tfa, msgInfo, p_msgInfo, enp);
 			if (err != Tfa98xx_Error_Ok) {
-<<<<<<< HEAD
-				/*
-=======
 				/* 
->>>>>>> a14acd5b7a89 (Import techpack/audio changes from MiCode)
 				 * Force a full update for the next write
 				 * As the current status of the DSP is unknown
 				 */
@@ -617,11 +589,7 @@ static enum Tfa98xx_Error tfaContWriteVstepMax2(struct tfa_device *tfa, nxpTfaVo
 		}
 
 		msgInfo = tfaContGetNextmsgInfo(msgInfo);
-<<<<<<< HEAD
-		if(enp)
-=======
 		if(enp) 
->>>>>>> a14acd5b7a89 (Import techpack/audio changes from MiCode)
 			p_msgInfo = tfaContGetNextmsgInfo(p_msgInfo);
 	}
 
@@ -799,11 +767,7 @@ static nxpTfaDescPtr_t *tfa_cnt_get_dsc(nxpTfaContainer_t *cnt, nxpTfaDescriptor
  *  - find the patch file for this devidx
  *  - return the devid from the patch or 0 if not found
  */
-<<<<<<< HEAD
-int tfa_cnt_get_devid(nxpTfaContainer_t *cnt, int dev_idx)
-=======
 int tfa_cnt_get_devid(nxpTfaContainer_t *cnt, int dev_idx) 
->>>>>>> a14acd5b7a89 (Import techpack/audio changes from MiCode)
 {
 	nxpTfaPatch_t *patchfile;
 	nxpTfaDescPtr_t *patchdsc;
@@ -885,11 +849,7 @@ enum Tfa98xx_Error tfaContGetSlave(struct tfa_device *tfa, uint8_t *slave_addr)
 }
 
 /* If no container file is given, we can always have used the slave argument */
-<<<<<<< HEAD
-void tfaContSetSlave(uint8_t slave_addr)
-=======
 void tfaContSetSlave(uint8_t slave_addr) 
->>>>>>> a14acd5b7a89 (Import techpack/audio changes from MiCode)
 {
 	gslave_address = slave_addr;
 }
@@ -917,11 +877,7 @@ int tfa_cont_get_idx(struct tfa_device *tfa)
 /*
  * write a bit field
  */
-<<<<<<< HEAD
-enum Tfa98xx_Error tfaRunWriteBitfield(struct tfa_device *tfa,  nxpTfaBitfield_t bf)
-=======
 enum Tfa98xx_Error tfaRunWriteBitfield(struct tfa_device *tfa,  nxpTfaBitfield_t bf) 
->>>>>>> a14acd5b7a89 (Import techpack/audio changes from MiCode)
 {
 	enum Tfa98xx_Error error;
         uint16_t value;
@@ -929,11 +885,7 @@ enum Tfa98xx_Error tfaRunWriteBitfield(struct tfa_device *tfa,  nxpTfaBitfield_t
 		uint16_t field;
 		nxpTfaBfEnum_t Enum;
 	} bfUni;
-<<<<<<< HEAD
-
-=======
         
->>>>>>> a14acd5b7a89 (Import techpack/audio changes from MiCode)
 	value=bf.value;
 	bfUni.field = bf.field;
 #ifdef TFA_DEBUG
@@ -949,11 +901,7 @@ enum Tfa98xx_Error tfaRunWriteBitfield(struct tfa_device *tfa,  nxpTfaBitfield_t
 /*
  * read a bit field
  */
-<<<<<<< HEAD
-enum Tfa98xx_Error tfaRunReadBitfield(struct tfa_device *tfa,  nxpTfaBitfield_t *bf)
-=======
 enum Tfa98xx_Error tfaRunReadBitfield(struct tfa_device *tfa,  nxpTfaBitfield_t *bf) 
->>>>>>> a14acd5b7a89 (Import techpack/audio changes from MiCode)
 {
 	enum Tfa98xx_Error error;
 	union {
@@ -999,11 +947,7 @@ static enum Tfa98xx_Error tfaRunWriteDspMem(struct tfa_device *tfa, nxpTfaDspMem
  *  note that the data is in an aligned union for all filter variants
  *  the aa data is used but it's the same for all of them
  */
-<<<<<<< HEAD
-static enum Tfa98xx_Error tfaRunWriteFilter(struct tfa_device *tfa, nxpTfaContBiquad_t *bq)
-=======
 static enum Tfa98xx_Error tfaRunWriteFilter(struct tfa_device *tfa, nxpTfaContBiquad_t *bq) 
->>>>>>> a14acd5b7a89 (Import techpack/audio changes from MiCode)
 {
 	enum Tfa98xx_Error error = Tfa98xx_Error_Ok;
 	enum Tfa98xx_DMEM dmem;
@@ -1112,11 +1056,7 @@ static enum Tfa98xx_Error tfaRunWriteRegister(struct tfa_device *tfa, nxpTfaRegp
 }
 
 // write reg and bitfield items in the devicelist to the target
-<<<<<<< HEAD
-enum Tfa98xx_Error tfaContWriteRegsDev(struct tfa_device *tfa)
-=======
 enum Tfa98xx_Error tfaContWriteRegsDev(struct tfa_device *tfa) 
->>>>>>> a14acd5b7a89 (Import techpack/audio changes from MiCode)
 {
 	nxpTfaDeviceList_t *dev = tfaContDevice(tfa->cnt, tfa->dev_idx);
 	nxpTfaBitfield_t *bitF;
@@ -1148,11 +1088,7 @@ enum Tfa98xx_Error tfaContWriteRegsDev(struct tfa_device *tfa)
 }
 
 // write reg and bitfield items in the profilelist the target
-<<<<<<< HEAD
-enum Tfa98xx_Error tfaContWriteRegsProf(struct tfa_device *tfa, int prof_idx)
-=======
 enum Tfa98xx_Error tfaContWriteRegsProf(struct tfa_device *tfa, int prof_idx) 
->>>>>>> a14acd5b7a89 (Import techpack/audio changes from MiCode)
 {
 	nxpTfaProfileList_t *prof = tfaContGetDevProfList(tfa->cnt, tfa->dev_idx, prof_idx);
 	nxpTfaBitfield_t *bitf;
@@ -1185,11 +1121,7 @@ enum Tfa98xx_Error tfaContWriteRegsProf(struct tfa_device *tfa, int prof_idx)
 }
 
 // write  patchfile in the devicelist to the target
-<<<<<<< HEAD
-enum Tfa98xx_Error tfaContWritePatch(struct tfa_device *tfa)
-=======
 enum Tfa98xx_Error tfaContWritePatch(struct tfa_device *tfa) 
->>>>>>> a14acd5b7a89 (Import techpack/audio changes from MiCode)
 {
 	enum Tfa98xx_Error err = Tfa98xx_Error_Ok;
 	nxpTfaDeviceList_t *dev = tfaContDevice(tfa->cnt, tfa->dev_idx);
@@ -1240,11 +1172,7 @@ static void create_dsp_buffer_msg(struct tfa_device *tfa, nxpTfaMsg_t *msg, char
 }
 
 // write all  param files in the devicelist to the target
-<<<<<<< HEAD
-enum Tfa98xx_Error tfaContWriteFiles(struct tfa_device *tfa)
-=======
 enum Tfa98xx_Error tfaContWriteFiles(struct tfa_device *tfa) 
->>>>>>> a14acd5b7a89 (Import techpack/audio changes from MiCode)
 {
 	nxpTfaDeviceList_t *dev = tfaContDevice(tfa->cnt, tfa->dev_idx);
 	nxpTfaFileDsc_t *file;
@@ -1313,11 +1241,7 @@ enum Tfa98xx_Error tfaContWriteFiles(struct tfa_device *tfa)
  *  write all  param files in the profilelist to the target
  *   this is used during startup when maybe ACS is set
  */
-<<<<<<< HEAD
-enum Tfa98xx_Error tfaContWriteFilesProf(struct tfa_device *tfa, int prof_idx, int vstep_idx)
-=======
 enum Tfa98xx_Error tfaContWriteFilesProf(struct tfa_device *tfa, int prof_idx, int vstep_idx) 
->>>>>>> a14acd5b7a89 (Import techpack/audio changes from MiCode)
 {
 	enum Tfa98xx_Error err = Tfa98xx_Error_Ok;
 	nxpTfaProfileList_t *prof = tfaContGetDevProfList(tfa->cnt, tfa->dev_idx, prof_idx);
@@ -1454,11 +1378,7 @@ static unsigned int tfa98xx_sr_from_field(unsigned int field)
 	}
 }
 
-<<<<<<< HEAD
-enum Tfa98xx_Error tfa_write_filters(struct tfa_device *tfa, int prof_idx)
-=======
 enum Tfa98xx_Error tfa_write_filters(struct tfa_device *tfa, int prof_idx) 
->>>>>>> a14acd5b7a89 (Import techpack/audio changes from MiCode)
 {
 	enum Tfa98xx_Error err = Tfa98xx_Error_Ok;
 	nxpTfaProfileList_t *prof = tfaContGetDevProfList(tfa->cnt, tfa->dev_idx, prof_idx);
@@ -1486,11 +1406,7 @@ enum Tfa98xx_Error tfa_write_filters(struct tfa_device *tfa, int prof_idx)
 		if (tfa->verbose)
 			pr_err("Unable to write filters, CLKS=0 \n");
 
-<<<<<<< HEAD
-		return Tfa98xx_Error_StateTimedOut;
-=======
 		return Tfa98xx_Error_StateTimedOut;	
->>>>>>> a14acd5b7a89 (Import techpack/audio changes from MiCode)
 	}
 
 	/* process the list until the end of the profile or the default section */
@@ -1632,28 +1548,17 @@ static enum Tfa98xx_Error get_sample_rate_info(struct tfa_device *tfa, nxpTfaPro
 		if (tfa->verbose)
 			pr_debug("Writing delay tables for AUDFS=%d \n", fs_next_profile);
 
-<<<<<<< HEAD
-		/* If the AUDFS from the next profile is not the same as
-		 * the AUDFS from the default we need to write new delay tables
-=======
 		/* If the AUDFS from the next profile is not the same as 
 		 * the AUDFS from the default we need to write new delay tables 
->>>>>>> a14acd5b7a89 (Import techpack/audio changes from MiCode)
 		 */
 		err = tfa98xx_dsp_write_tables(tfa, fs_next_profile);
 	} else if(fs_default_profile != fs_previous_profile) {
 		if (tfa->verbose)
 			pr_debug("Writing delay tables for AUDFS=%d \n", fs_default_profile);
 
-<<<<<<< HEAD
-		/* But if we do not have a new AUDFS in the next profile and
-		 * the AUDFS from the default profile is not the same as the AUDFS
-		 * from the previous profile we also need to write new delay tables
-=======
 		/* But if we do not have a new AUDFS in the next profile and 
 		 * the AUDFS from the default profile is not the same as the AUDFS 
 		 * from the previous profile we also need to write new delay tables 
->>>>>>> a14acd5b7a89 (Import techpack/audio changes from MiCode)
 		 */
 		err = tfa98xx_dsp_write_tables(tfa, fs_default_profile);
 	}
@@ -1666,11 +1571,7 @@ static enum Tfa98xx_Error get_sample_rate_info(struct tfa_device *tfa, nxpTfaPro
  *   NOTE an error return during processing will leave the device muted
  *
  */
-<<<<<<< HEAD
-enum Tfa98xx_Error tfaContWriteProfile(struct tfa_device *tfa, int prof_idx, int vstep_idx)
-=======
 enum Tfa98xx_Error tfaContWriteProfile(struct tfa_device *tfa, int prof_idx, int vstep_idx) 
->>>>>>> a14acd5b7a89 (Import techpack/audio changes from MiCode)
 {
 	enum Tfa98xx_Error err = Tfa98xx_Error_Ok;
 	nxpTfaProfileList_t *prof = tfaContGetDevProfList(tfa->cnt, tfa->dev_idx, prof_idx);
@@ -1693,11 +1594,7 @@ enum Tfa98xx_Error tfaContWriteProfile(struct tfa_device *tfa, int prof_idx, int
 	/* We only make a power cycle when the profiles are not in the same group */
 	if (prof->group == previous_prof->group && prof->group != 0) {
 		if (tfa->verbose) {
-<<<<<<< HEAD
-			pr_debug("The new profile (%s) is in the same group as the current profile (%s) \n",
-=======
 			pr_debug("The new profile (%s) is in the same group as the current profile (%s) \n", 
->>>>>>> a14acd5b7a89 (Import techpack/audio changes from MiCode)
 				tfaContGetString(tfa->cnt, &prof->name), tfaContGetString(tfa->cnt, &previous_prof->name));
 		}
 	} else {
@@ -1713,21 +1610,13 @@ enum Tfa98xx_Error tfaContWriteProfile(struct tfa_device *tfa, int prof_idx, int
 			TFA_SET_BF_VOLATILE(tfa, SBSL, 0);
 		}
 
-<<<<<<< HEAD
-		/* When we switch profile we first power down the subsystem
-=======
 		/* When we switch profile we first power down the subsystem 
->>>>>>> a14acd5b7a89 (Import techpack/audio changes from MiCode)
 		 * This should only be done when we are in operating mode
 		 */
 		if (((tfa->tfa_family == 2) && (TFA_GET_BF(tfa, MANSTATE) >= 6)) || (tfa->tfa_family != 2)) {
 			err = tfa98xx_powerdown(tfa, 1);
 			if (err) return err;
-<<<<<<< HEAD
-
-=======
 			
->>>>>>> a14acd5b7a89 (Import techpack/audio changes from MiCode)
 			/* Wait until we are in PLL powerdown */
 			do {
 				err = tfa98xx_dsp_system_stable(tfa, &ready);
@@ -1750,11 +1639,7 @@ enum Tfa98xx_Error tfaContWriteProfile(struct tfa_device *tfa, int prof_idx, int
 	/* set all bitfield settings */
 	/* First set all default settings */
 	if (tfa->verbose) {
-<<<<<<< HEAD
-		pr_debug("---------- default settings profile: %s (%d) ---------- \n",
-=======
 		pr_debug("---------- default settings profile: %s (%d) ---------- \n", 
->>>>>>> a14acd5b7a89 (Import techpack/audio changes from MiCode)
 				tfaContGetString(tfa->cnt, &previous_prof->name), tfa_dev_get_swprof(tfa));
 	}
 
@@ -1778,11 +1663,7 @@ enum Tfa98xx_Error tfaContWriteProfile(struct tfa_device *tfa, int prof_idx, int
 	}
 
 	if (tfa->verbose)
-<<<<<<< HEAD
-		pr_debug("---------- new settings profile: %s (%d) ---------- \n",
-=======
 		pr_debug("---------- new settings profile: %s (%d) ---------- \n", 
->>>>>>> a14acd5b7a89 (Import techpack/audio changes from MiCode)
 				tfaContGetString(tfa->cnt, &prof->name), prof_idx);
 
 	/* set new settings */
@@ -1823,11 +1704,7 @@ enum Tfa98xx_Error tfaContWriteProfile(struct tfa_device *tfa, int prof_idx, int
 	if (prof->group != previous_prof->group || prof->group == 0) {
 		if (tfa->tfa_family == 2)
 			TFA_SET_BF_VOLATILE(tfa, MANSCONF, 1);
-<<<<<<< HEAD
-
-=======
 		
->>>>>>> a14acd5b7a89 (Import techpack/audio changes from MiCode)
 		/* Leave powerdown state */
 		err = tfa_cf_powerup(tfa);
 		if (err) return err;
@@ -1846,11 +1723,7 @@ enum Tfa98xx_Error tfaContWriteProfile(struct tfa_device *tfa, int prof_idx, int
 	err = get_sample_rate_info(tfa, prof, previous_prof, fs_previous_profile);
 	if (err) return err;
 
-<<<<<<< HEAD
-
-=======
 	
->>>>>>> a14acd5b7a89 (Import techpack/audio changes from MiCode)
 		/* Write files from previous profile (default section)
 		 * Should only be used for the patch&trap patch (file)
 		 */
@@ -1954,13 +1827,8 @@ enum Tfa98xx_Error tfaContWriteProfile(struct tfa_device *tfa, int prof_idx, int
 	}
 
 	if ((prof->group != previous_prof->group || prof->group == 0) && (tfa->tfa_family == 2)) {
-<<<<<<< HEAD
-		if (TFA_GET_BF(tfa, REFCKSEL) == 0) {
-			/* set SBSL to go to operation mode */
-=======
 		if (TFA_GET_BF(tfa, REFCKSEL) == 0) {		
 			/* set SBSL to go to operation mode */		
->>>>>>> a14acd5b7a89 (Import techpack/audio changes from MiCode)
 			TFA_SET_BF_VOLATILE(tfa, SBSL, 1);
 		}
 	}
@@ -2036,15 +1904,9 @@ char *tfaContGetCommandString(uint32_t type)
 	else if(type == dscSetSensesDelay)
 		return "SetSensesDelay";
 	else if(type == dscSetMBDrc)
-<<<<<<< HEAD
-		return "SetMBDrc";
-	else if(type == dscSetFwkUseCase)
-		return "SetFwkUseCase";
-=======
 		return "SetMBDrc";	
 	else if(type == dscSetFwkUseCase)
 		return "SetFwkUseCase";	
->>>>>>> a14acd5b7a89 (Import techpack/audio changes from MiCode)
 	else if(type == dscSetVddpConfig)
 		return "SetVddpConfig";
 	else if(type == dscFilter)
@@ -2094,11 +1956,7 @@ int tfa_cnt_get_app_name(struct tfa_device *tfa, char *name)
  * Returns: (profile index) if found, (-2) if no
  * calibration profile is found or (-1) on error
  */
-<<<<<<< HEAD
-int tfaContGetCalProfile(struct tfa_device *tfa)
-=======
 int tfaContGetCalProfile(struct tfa_device *tfa) 
->>>>>>> a14acd5b7a89 (Import techpack/audio changes from MiCode)
 {
 	int prof, cal_idx = -2;
 
@@ -2124,11 +1982,7 @@ int tfaContIsTapProfile(struct tfa_device *tfa, int prof_idx)
 {
 	if ((tfa->dev_idx < 0) || (tfa->dev_idx >= tfa->cnt->ndev))
 		return -1;
-<<<<<<< HEAD
-
-=======
 	
->>>>>>> a14acd5b7a89 (Import techpack/audio changes from MiCode)
 	/* Check if next profile is tap profile */
 	if (strstr(tfaContProfileName(tfa->cnt, tfa->dev_idx, prof_idx), ".tap") != NULL) {
 		pr_debug("Using Tap profile: '%s'\n", tfaContProfileName(tfa->cnt, tfa->dev_idx, prof_idx));
@@ -2258,11 +2112,7 @@ nxpTfaProfileList_t* tfaContNextProfile(nxpTfaProfileList_t* prof) {
  * return the next livedata
  */
 nxpTfaLiveDataList_t* tfaContNextLiveData(nxpTfaLiveDataList_t* livedata) {
-<<<<<<< HEAD
-	nxpTfaLiveDataList_t* nextlivedata = (nxpTfaLiveDataList_t *)( (char*)livedata + (livedata->length*4) +
-=======
 	nxpTfaLiveDataList_t* nextlivedata = (nxpTfaLiveDataList_t *)( (char*)livedata + (livedata->length*4) + 
->>>>>>> a14acd5b7a89 (Import techpack/audio changes from MiCode)
                                                                         sizeof(nxpTfaLiveDataList_t) -4);
 
 	if (nextlivedata->ID == TFA_LIVEDATAID)
@@ -2277,11 +2127,7 @@ nxpTfaLiveDataList_t* tfaContNextLiveData(nxpTfaLiveDataList_t* livedata) {
  *
  *   return non zero value on error
  */
-<<<<<<< HEAD
-int tfaContCrcCheckContainer(nxpTfaContainer_t *cont)
-=======
 int tfaContCrcCheckContainer(nxpTfaContainer_t *cont) 
->>>>>>> a14acd5b7a89 (Import techpack/audio changes from MiCode)
 {
 	uint8_t *base;
 	size_t size;
@@ -2294,11 +2140,7 @@ int tfaContCrcCheckContainer(nxpTfaContainer_t *cont)
 	return crc != cont->CRC;
 }
 
-<<<<<<< HEAD
-static void get_all_features_from_cnt(struct tfa_device *tfa, int *hw_feature_register, int sw_feature_register[2])
-=======
 static void get_all_features_from_cnt(struct tfa_device *tfa, int *hw_feature_register, int sw_feature_register[2]) 
->>>>>>> a14acd5b7a89 (Import techpack/audio changes from MiCode)
 {
 	nxpTfaFeatures_t *features;
 	int i;
@@ -2344,11 +2186,7 @@ enum Tfa98xx_Error tfa98xx_factory_trimmer(struct tfa_device *tfa)
 	return (tfa->dev_ops.factory_trimmer)(tfa);
 }
 
-<<<<<<< HEAD
-enum Tfa98xx_Error tfa_set_filters(struct tfa_device *tfa, int prof_idx)
-=======
 enum Tfa98xx_Error tfa_set_filters(struct tfa_device *tfa, int prof_idx) 
->>>>>>> a14acd5b7a89 (Import techpack/audio changes from MiCode)
 {
 	enum Tfa98xx_Error err = Tfa98xx_Error_Ok;
 	nxpTfaProfileList_t *prof = tfaContGetDevProfList(tfa->cnt, tfa->dev_idx, prof_idx);
@@ -2385,26 +2223,16 @@ int tfa_tib_dsp_msgmulti(struct tfa_device *tfa, int length, const char *buffer)
 	int post_len = 0;
 
 	/* checks for 24b_BE or 32_LE */
-<<<<<<< HEAD
-	int len_word_in_bytes = (tfa->convert_dsp32) ? 4 : 3;
-	/* TODO: get rid of these magic constants max size should depend on the tfa device type */
-	int tfadsp_max_msg_size = (tfa->convert_dsp32) ? 5336 : 4000;
-=======
 	int len_word_in_bytes = (tfa->convert_dsp32) ? 4 : 3;   
 	/* TODO: get rid of these magic constants max size should depend on the tfa device type */
 	int tfadsp_max_msg_size = (tfa->convert_dsp32) ? 5336 : 4000; 
->>>>>>> a14acd5b7a89 (Import techpack/audio changes from MiCode)
 
 	/* No data found*/
 	if(length == -1 && blob == NULL) {
 		return -1;
 	}
 
-<<<<<<< HEAD
-	if (length == -1) {
-=======
 	if (length == -1) {        
->>>>>>> a14acd5b7a89 (Import techpack/audio changes from MiCode)
 		int i;
 		/* set last length field to zero */
 		for (i = total; i < (total + len_word_in_bytes); i++) {
@@ -2426,21 +2254,13 @@ int tfa_tib_dsp_msgmulti(struct tfa_device *tfa, int length, const char *buffer)
 		/* add command ID for multi-msg = 0x008015 */
 		if (tfa->convert_dsp32) {
 			blob[0] = 0x15;
-<<<<<<< HEAD
-			blob[1] = 0x80;
-=======
 			blob[1] = 0x80; 
->>>>>>> a14acd5b7a89 (Import techpack/audio changes from MiCode)
 			blob[2] = 0x0;
 			blob[3] = 0x0;
 		}
 		else {
 			blob[0] = 0x0;
-<<<<<<< HEAD
-			blob[1] = 0x80;
-=======
 			blob[1] = 0x80; 
->>>>>>> a14acd5b7a89 (Import techpack/audio changes from MiCode)
 			blob[2] = 0x15;
 		}
 		blobptr = blob;

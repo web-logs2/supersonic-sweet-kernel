@@ -140,13 +140,7 @@ struct tfa98xx {
 	struct tfa98xx_firmware fw;
 	char *fw_name;
 	int rate;
-<<<<<<< HEAD
-	/*[nxp34663] CR: support 16bit/24bit/32bit audio data. begin*/
 	u8 pcm_format;
-	/*[nxp34663] CR: support 16bit/24bit/32bit audio data. end*/
-=======
-	u8 pcm_format;
->>>>>>> a14acd5b7a89 (Import techpack/audio changes from MiCode)
 	wait_queue_head_t wq;
 	struct device *dev;
 	unsigned int init_count;
@@ -184,18 +178,11 @@ struct tfa98xx {
 
 	struct miscdevice tfa98xx_reg;
 	struct miscdevice tfa98xx_rw;
-<<<<<<< HEAD
-	struct miscdevice tfa98xx_rpc;
-=======
 	struct miscdevice tfa98xx_rpc;	
->>>>>>> a14acd5b7a89 (Import techpack/audio changes from MiCode)
 	struct miscdevice tfa98xx_profile;
 	struct miscdevice tfa98xx_control;
 };
 
 
 #endif /* __TFA98XX_INC__ */
-<<<<<<< HEAD
-=======
 
->>>>>>> a14acd5b7a89 (Import techpack/audio changes from MiCode)

@@ -157,20 +157,12 @@ static int tfa_get_swvstep(struct tfa_device *tfa)
 }
 
 static int tfa_get_mtpb(struct tfa_device *tfa) {
-<<<<<<< HEAD
-
-=======
 	
->>>>>>> a14acd5b7a89 (Import techpack/audio changes from MiCode)
 	int value=0;
 
 	/* Set the new value in the hw register */
 	value = TFA_GET_BF(tfa, MTPB);
-<<<<<<< HEAD
-
-=======
 	
->>>>>>> a14acd5b7a89 (Import techpack/audio changes from MiCode)
 	return value;
 }
 
@@ -749,11 +741,7 @@ static enum Tfa98xx_Error tfa9874_specific(struct tfa_device *tfa)
 	switch (tfa->rev) {
 		case 0x0a74: /* Initial revision ID */
 			/* ----- generated code start ----- */
-<<<<<<< HEAD
-			/* V25 */
-=======
 			/* V25 */            
->>>>>>> a14acd5b7a89 (Import techpack/audio changes from MiCode)
 			reg_write(tfa, 0x02, 0x22a8); //POR=0x25c8
 			reg_write(tfa, 0x51, 0x0020); //POR=0x0000
 			reg_write(tfa, 0x52, 0x57dc); //POR=0x56dc
@@ -1115,11 +1103,7 @@ static enum Tfa98xx_Error tfa9896_specific(struct tfa_device *tfa)
 		reg_write(tfa, 0x48, 0x0300); //POR=0x0308
 		reg_write(tfa, 0x88, 0x0100); //POR=0x0000
 		/* ----- generated code end   ----- */
-<<<<<<< HEAD
-	}
-=======
 	}						  
->>>>>>> a14acd5b7a89 (Import techpack/audio changes from MiCode)
 	else if (tfa->rev == 0x3b96) {
 		/* ----- generated code start ----- v1*/
 		reg_write(tfa, 0x06, 0x000b); //POR=0x0001
@@ -1128,11 +1112,7 @@ static enum Tfa98xx_Error tfa9896_specific(struct tfa_device *tfa)
 		reg_write(tfa, 0x48, 0x0300); //POR=0x0308
 		reg_write(tfa, 0x88, 0x0100); //POR=0x0000
 		/* ----- generated code end   ----- */
-<<<<<<< HEAD
-	}
-=======
 	}	
->>>>>>> a14acd5b7a89 (Import techpack/audio changes from MiCode)
 	/* $49:[0] - 1 ==> 0; CLIP - default value changed. 0 means CLIPPER on */
 	error = reg_read(tfa, 0x49, &check_value);
 	check_value &= ~0x1;
@@ -1592,11 +1572,7 @@ static enum Tfa98xx_Error tfa9894_set_osc_powerdown(struct tfa_device *tfa, int 
 	}
 
 	return Tfa98xx_Error_Bad_Parameter;
-<<<<<<< HEAD
-}
-=======
 } 
->>>>>>> a14acd5b7a89 (Import techpack/audio changes from MiCode)
 
 static enum Tfa98xx_Error tfa9894_faim_protect(struct tfa_device *tfa, int status)
 {
@@ -1639,7 +1615,6 @@ static enum Tfa98xx_Error tfa9894_specific(struct tfa_device *tfa)
 		/* ----- generated code end   ----- */
 	} else if (tfa->rev == 0x1a94) {
 		/* V14 */
-<<<<<<< HEAD
 		/* ----- generated code start ----- */
 		reg_write(tfa, 0x00, 0xa245); //POR=0x8245
 		reg_write(tfa, 0x01, 0x15da); //POR=0x11ca
@@ -1655,23 +1630,6 @@ static enum Tfa98xx_Error tfa9894_specific(struct tfa_device *tfa)
 		reg_write(tfa, 0x76, 0x0067); //POR=0x0065
 		reg_write(tfa, 0x80, 0x0000); //POR=0x0003
 		reg_write(tfa, 0x81, 0x5799); //POR=0x561a
-=======
-		/* ----- generated code start ----- */
-		reg_write(tfa, 0x00, 0xa245); //POR=0x8245
-		reg_write(tfa, 0x01, 0x15da); //POR=0x11ca
-		reg_write(tfa, 0x02, 0x5288); //POR=0x55c8
-		reg_write(tfa, 0x52, 0xbe17); //POR=0xb617
-		reg_write(tfa, 0x53, 0x0dbe); //POR=0x0d9e
-		reg_write(tfa, 0x56, 0x05c3); //POR=0x07c3
-		reg_write(tfa, 0x57, 0x0344); //POR=0x0366
-		reg_write(tfa, 0x61, 0x0032); //POR=0x0073
-		reg_write(tfa, 0x71, 0x00cf); //POR=0x018d
-		reg_write(tfa, 0x72, 0x34a9); //POR=0x44e8
-		reg_write(tfa, 0x73, 0x38c8); //POR=0x3806
-		reg_write(tfa, 0x76, 0x0067); //POR=0x0065
-		reg_write(tfa, 0x80, 0x0000); //POR=0x0003
-		reg_write(tfa, 0x81, 0x5799); //POR=0x561a
->>>>>>> a14acd5b7a89 (Import techpack/audio changes from MiCode)
 		reg_write(tfa, 0x82, 0x0104); //POR=0x0044
 		/* ----- generated code end ----- */
 

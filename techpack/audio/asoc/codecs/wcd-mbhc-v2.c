@@ -1004,12 +1004,6 @@ static void wcd_mbhc_swch_irq_handler(struct wcd_mbhc *mbhc)
 		mbhc->mbhc_cfg->flip_switch = false;
 		if (mbhc->mbhc_fn)
 			mbhc->mbhc_fn->wcd_mbhc_detect_plug_type(mbhc);
-#if defined(CONFIG_TARGET_PRODUCT_K9A)
-		if (mbhc->mbhc_cfg->enable_usbc_analog &&
-				mbhc->mbhc_cfg->fsa_enable)
-			WCD_MBHC_REG_UPDATE_BITS(WCD_MBHC_L_DET_EN, 0);
-		pr_err("line 1008: WCD_MBHC_REG_UPDATE_BITS(WCD_MBHC_L_DET_EN, 0)");
-#endif
 	} else if ((mbhc->current_plug != MBHC_PLUG_TYPE_NONE)
 			&& !detection_type) {
 		/* Disable external voltage source to micbias if present */
@@ -1245,7 +1239,7 @@ static irqreturn_t wcd_mbhc_btn_press_handler(int irq, void *data)
 	}
 	mbhc->buttons_pressed |= mask;
 	mbhc->mbhc_cb->lock_sleep(mbhc, true);
-	if (queue_delayed_work(system_power_efficient_wq, &mbhc->mbhc_btn_dwork,
+	if (schedule_delayed_work(&mbhc->mbhc_btn_dwork,
 				msecs_to_jiffies(400)) == 0) {
 		WARN(1, "Button pressed twice without release event\n");
 		mbhc->mbhc_cb->lock_sleep(mbhc, false);
@@ -1681,15 +1675,7 @@ static int wcd_mbhc_usbc_ana_event_handler(struct notifier_block *nb,
 			mbhc->mbhc_cb->clk_setup(mbhc->codec, true);
 		}
 		/* insertion detected, enable L_DET_EN */
-#if defined(CONFIG_TARGET_PRODUCT_K9A)
-		WCD_MBHC_REG_UPDATE_BITS(WCD_MBHC_L_DET_EN, 0);
-#endif
 		WCD_MBHC_REG_UPDATE_BITS(WCD_MBHC_L_DET_EN, 1);
-#if defined(CONFIG_TARGET_PRODUCT_K9A)
-	} else if (mode == POWER_SUPPLY_TYPEC_NONE) {
-		WCD_MBHC_REG_UPDATE_BITS(WCD_MBHC_L_DET_EN, 1);
-		pr_err("line 1684: WCD_MBHC_REG_UPDATE_BITS(WCD_MBHC_L_DET_EN, 1)");
-#endif
 	}
 	return 0;
 }
@@ -1992,7 +1978,7 @@ int wcd_mbhc_start(struct wcd_mbhc *mbhc, struct wcd_mbhc_config *mbhc_cfg)
 		}
 	} else {
 		if (!mbhc->mbhc_fw || !mbhc->mbhc_cal)
-			queue_delayed_work(system_power_efficient_wq, &mbhc->mbhc_firmware_dwork,
+			schedule_delayed_work(&mbhc->mbhc_firmware_dwork,
 				      usecs_to_jiffies(FW_READ_TIMEOUT));
 		else
 			pr_err("%s: Skipping to read mbhc fw, 0x%pK %pK\n",
@@ -2211,14 +2197,6 @@ int wcd_mbhc_init(struct wcd_mbhc *mbhc, struct snd_soc_codec *codec,
 				__func__);
 			return ret;
 		}
-		ret = snd_soc_card_jack_new(codec->component.card,
-					    "USB_3_5 Jack", WCD_MBHC_JACK_USB_3_5_MASK,
-					    &mbhc->usb_3_5_jack, NULL, 0);
-		if (ret) {
-			pr_err("%s: Failed to create new jack USB_3_5 Jack\n", __func__);
-			return ret;
-		}
-
 		ret = snd_soc_card_jack_new(codec->component.card,
 					    "USB_3_5 Jack", WCD_MBHC_JACK_USB_3_5_MASK,
 					    &mbhc->usb_3_5_jack, NULL, 0);

@@ -1,9 +1,5 @@
 /** Filename: tfa9896_tfafieldnames.h
-<<<<<<< HEAD
- *  This file was generated automatically on 08/15/16 at 09:43:38.
-=======
  *  This file was generated automatically on 08/15/16 at 09:43:38. 
->>>>>>> a14acd5b7a89 (Import techpack/audio changes from MiCode)
  *  Source file: TFA9896_N1B1_I2C_regmap_V16.xlsx
  */
 

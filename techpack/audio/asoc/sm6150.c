@@ -233,34 +233,6 @@ struct msm_asoc_wcd93xx_codec {
 				   enum afe_config_type config_type);
 };
 
-#ifdef CONFIG_TARGET_PRODUCT_K9A
-/* the name and codec name is depended on which i2s bus and TFA address used. */
-static struct snd_soc_dai_link_component tfa98xx_dai_link_component[]=
-{
-	{
-		.name= "tfa98xx.1-0034",
-		.dai_name="tfa98xx-aif-1-34",
-	},
-
-	{
-		.name= "tfa98xx.1-0035",
-		.dai_name="tfa98xx-aif-1-35",
-	},
-};
-
-static struct snd_soc_codec_conf tfa98xx_codec_conf[] = {
-	{
-		.dev_name       = "tfa98xx-aif-1-34",
-		.name_prefix    = "RCV",
-	},
-
-	{
-		.dev_name       = "tfa98xx-aif-1-35",
-		.name_prefix    = "SPK",
-	},
-};
-#endif
-
 static struct snd_soc_card snd_soc_card_sm6150_msm;
 
 /* TDM default config */
@@ -5125,6 +5097,7 @@ static int msm_int_audrx_init(struct snd_soc_pcm_runtime *rtd)
 	struct snd_soc_dapm_context *dapm = snd_soc_codec_get_dapm(codec);
 	struct snd_card *card;
 	struct snd_info_entry *entry;
+	//struct snd_soc_component *aux_comp;
 	struct msm_asoc_mach_data *pdata =
 				snd_soc_card_get_drvdata(rtd->card);
 

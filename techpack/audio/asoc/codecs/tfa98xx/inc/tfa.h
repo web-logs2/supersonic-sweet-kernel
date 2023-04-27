@@ -45,17 +45,7 @@ void tfa_devs_destroy(int count);
 struct tfa_device ** tfa_get_device_struct(void);
 
 
-<<<<<<< HEAD
-/*[nxp34663] CR: support 16bit/24bit/32bit audio data. begin*/
-#ifdef __KERNEL__
 int tfa_plop_noise_interrupt(struct tfa_device *tfa, int profile, int vstep, u8 pcm_format);
-#else
-int tfa_plop_noise_interrupt(struct tfa_device *tfa, int profile, int vstep);
-#endif
-/*[nxp34663] CR: support 16bit/24bit/32bit audio data. end*/
-=======
-int tfa_plop_noise_interrupt(struct tfa_device *tfa, int profile, int vstep, u8 pcm_format);
->>>>>>> a14acd5b7a89 (Import techpack/audio changes from MiCode)
 void tfa_lp_mode_interrupt(struct tfa_device *tfa);
 
 #endif /* TFA_H_ */

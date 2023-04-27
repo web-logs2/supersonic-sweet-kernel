@@ -39,7 +39,4 @@
 #endif
 
 #endif /* __CONFIG_LINUX_KERNEL_INC__ */
-<<<<<<< HEAD
-=======
 
->>>>>>> a14acd5b7a89 (Import techpack/audio changes from MiCode)

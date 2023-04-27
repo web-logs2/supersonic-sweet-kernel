@@ -273,7 +273,6 @@ int afe_get_topology(int port_id)
 done:
 	return topology;
 }
-EXPORT_SYMBOL(afe_get_topology);
 
 EXPORT_SYMBOL(afe_get_topology);
 /**
@@ -2476,7 +2475,7 @@ static int send_afe_cal_type(int cal_index, int port_id)
 				this_afe.cal_data[cal_index]);
 
 	if (cal_block == NULL || cal_utils_is_cal_stale(cal_block)) {
-		pr_debug("%s cal_block not found!!\n", __func__);
+		pr_err_ratelimited("%s cal_block not found!!\n", __func__);
 		ret = -EINVAL;
 		goto unlock;
 	}
@@ -8780,6 +8779,7 @@ static void afe_release_uevent_data(struct kobject *kobj)
 }
 
 #ifdef CONFIG_SND_SOC_TFA9874_FOR_DAVI
+
 int send_tfa_cal_apr(void *buf, int cmd_size, bool bRead)
 {
 	int32_t result, port_id = AFE_PORT_ID_TFADSP_RX;
@@ -9211,3 +9211,4 @@ done:
 	return ret;
 }
 EXPORT_SYMBOL(afe_unvote_lpass_core_hw);
+

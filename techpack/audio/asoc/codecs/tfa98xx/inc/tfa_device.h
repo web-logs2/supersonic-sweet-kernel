@@ -187,17 +187,7 @@ int tfa_dev_probe(int slave, struct tfa_device *tfa);
  *  @return tfa_error enum
  */
 
-<<<<<<< HEAD
-/*[nxp34663] CR: support 16bit/24bit/32bit audio data. begin*/
-#ifdef __KERNEL__
 enum tfa_error tfa_dev_start(struct tfa_device *tfa, int next_profile, int vstep, u8 pcm_format);
-#else
-enum tfa_error tfa_dev_start(struct tfa_device *tfa, int next_profile, int vstep);
-#endif
-/*[nxp34663] CR: support 16bit/24bit/32bit audio data. end*/
-=======
-enum tfa_error tfa_dev_start(struct tfa_device *tfa, int next_profile, int vstep, u8 pcm_format);
->>>>>>> a14acd5b7a89 (Import techpack/audio changes from MiCode)
 
 
 /**
@@ -305,7 +295,4 @@ int tfa_irq_unmask(struct tfa_device *tfa);
 //debug?
 
 #endif /* __TFA_DEVICE_H__ */
-<<<<<<< HEAD
-=======
 
->>>>>>> a14acd5b7a89 (Import techpack/audio changes from MiCode)

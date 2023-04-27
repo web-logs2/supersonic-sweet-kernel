@@ -227,11 +227,7 @@ char *tfaContDsName(uint16_t num, unsigned short rev)
 		break;
 	case 0x74:
 		name =  tfa_bf2name(Tfa9874DatasheetNames, num);
-<<<<<<< HEAD
-		break;
-=======
 		break;        
->>>>>>> a14acd5b7a89 (Import techpack/audio changes from MiCode)
 	case 0x92:
 		name =  tfa_bf2name(Tfa9891DatasheetNames, num);
 		break;
@@ -306,11 +302,7 @@ uint16_t tfaContBfEnum(const char *name, unsigned short rev)
 		bfnum =  tfa_name2bf(Tfa9874DatasheetNames, name);
 		if (bfnum==0xffff)
 			bfnum = tfa_name2bf(Tfa9874BitNames, name);/* try long bitname table */
-<<<<<<< HEAD
-		break;
-=======
 		break;        
->>>>>>> a14acd5b7a89 (Import techpack/audio changes from MiCode)
 	case 0x92:
 		bfnum =  tfa_name2bf(Tfa9891DatasheetNames, name);
 		if (bfnum==0xffff)

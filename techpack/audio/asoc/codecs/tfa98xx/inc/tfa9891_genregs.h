@@ -1,9 +1,5 @@
 /** Filename: Tfa98xx_genregs.h
-<<<<<<< HEAD
- *  This file was generated automatically on 07/01/15 at 10:25:08.
-=======
  *  This file was generated automatically on 07/01/15 at 10:25:08. 
->>>>>>> a14acd5b7a89 (Import techpack/audio changes from MiCode)
  *  Source file: TFA9891_I2C_list_V11.xls
  */
 
