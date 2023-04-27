@@ -837,7 +837,7 @@ static int bolero_soc_codec_probe(struct snd_soc_codec *codec)
 			}
 		}
 	}
-	#ifdef CONFIG_SOUND_CONTROL
+#ifdef CONFIG_SOUND_CONTROL
 	sound_control_kobj = kobject_create_and_add("sound_control", kernel_kobj);
 	if (sound_control_kobj == NULL) {
 		pr_warn("%s kobject create failed!\n", __func__);
@@ -1021,6 +1021,7 @@ static int bolero_probe(struct platform_device *pdev)
 	priv->read_dev = __bolero_reg_read;
 	priv->write_dev = __bolero_reg_write;
 
+	BLOCKING_INIT_NOTIFIER_HEAD(&priv->notifier);
 	priv->plat_data.handle = (void *) priv;
 	priv->plat_data.update_wcd_event = bolero_cdc_update_wcd_event;
 	priv->plat_data.register_notifier = bolero_cdc_register_notifier;

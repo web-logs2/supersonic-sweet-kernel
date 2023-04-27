@@ -32,11 +32,7 @@
 #include "wcd-mbhc-v2.h"
 #include "pdata.h"
 
-#if defined(CONFIG_TARGET_PRODUCT_K9A)
-#define WCD_MBHC_ADC_HS_THRESHOLD_MV    1600
-#else
 #define WCD_MBHC_ADC_HS_THRESHOLD_MV    1700
-#endif
 #define WCD_MBHC_ADC_HPH_THRESHOLD_MV   75
 #define WCD_MBHC_ADC_MICBIAS_MV         1800
 #define WCD_MBHC_FAKE_INS_RETRY         4
@@ -139,14 +135,17 @@ static int wcd_measure_adc_once(struct wcd_mbhc *mbhc, int mux_ctl)
 	while (retry--) {
 		/* wait for 600usec to get adc results */
 		usleep_range(600, 610);
+		pr_debug("%s: retry: %d\n",  __func__, retry);
 
 		/* check for ADC Timeout */
 		WCD_MBHC_REG_READ(WCD_MBHC_ADC_TIMEOUT, adc_timeout);
+		pr_debug("%s: timeout: %d\n",  __func__, adc_timeout);
 		if (adc_timeout)
 			continue;
 
 		/* Read ADC complete bit */
 		WCD_MBHC_REG_READ(WCD_MBHC_ADC_COMPLETE, adc_complete);
+		pr_debug("%s: complete: %d\n",  __func__, adc_complete);
 		if (!adc_complete)
 			continue;
 

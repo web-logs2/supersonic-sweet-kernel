@@ -370,9 +370,11 @@ static int tx_macro_event_handler(struct snd_soc_codec *codec, u16 event,
 		tx_macro_mclk_reset(tx_dev);
 		break;
 	case BOLERO_MACRO_EVT_BCS_CLK_OFF:
+#ifdef CONFIG_SND_SOC_AWINIC_AW882XX
 		if (tx_priv->bcs_clk_en)
 			snd_soc_update_bits(codec,
 				BOLERO_CDC_TX0_TX_PATH_SEC7, 0x40, data << 6);
+#endif /* CONFIG_SND_SOC_AWINIC_AW882XX */
 		if (data)
 			tx_priv->hs_slow_insert_complete = true;
 		else
@@ -747,12 +749,11 @@ static int tx_macro_enable_dec(struct snd_soc_dapm_widget *w,
 					    TX_HPF_CUT_OFF_FREQ_MASK,
 					    CF_MIN_3DB_150HZ << 5);
 		/* schedule work queue to Remove Mute */
-		queue_delayed_work(system_power_efficient_wq, 
-					&tx_priv->tx_mute_dwork[decimator].dwork,
+		schedule_delayed_work(&tx_priv->tx_mute_dwork[decimator].dwork,
 				      msecs_to_jiffies(tx_unmute_delay));
 		if (tx_priv->tx_hpf_work[decimator].hpf_cut_off_freq !=
 							CF_MIN_3DB_150HZ) {
-			queue_delayed_work(system_power_efficient_wq,
+			schedule_delayed_work(
 					&tx_priv->tx_hpf_work[decimator].dwork,
 					msecs_to_jiffies(50));
 			snd_soc_update_bits(codec, hpf_gate_reg, 0x02, 0x02);
@@ -1713,7 +1714,11 @@ static int tx_macro_init(struct snd_soc_codec *codec)
 	}
 	tx_priv->codec = codec;
 	snd_soc_update_bits(codec,
+#ifdef CONFIG_SND_SOC_AWINIC_AW882XX
 		BOLERO_CDC_TX0_TX_PATH_SEC7, 0x3F, 0x0E);
+#else
+		BOLERO_CDC_TX0_TX_PATH_SEC7, 0x7F, 0x6A);
+#endif /* CONFIG_SND_SOC_AWINIC_AW882XX */
 
 	return 0;
 }

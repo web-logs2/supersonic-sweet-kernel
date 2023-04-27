@@ -1,35 +1,35 @@
 # auto-detect subdirs
 ifeq ($(CONFIG_ARCH_SDM845), y)
 include $(srctree)/techpack/audio/config/sdm845auto.conf
-export
+export $(shell sed 's/=.*//' $(srctree)/techpack/audio/config/sdm845auto.conf)
 ifeq ($(CONFIG_ARCH_SDM660), y)
 include $(srctree)/techpack/audio/config/sdm660auto_static.conf
-export
+export $(shell sed 's/=.*//' $(srctree)/techpack/audio/config/sdm660auto_static.conf)
 endif
 endif
 ifeq ($(CONFIG_ARCH_SDM670), y)
 include $(srctree)/techpack/audio/config/sdm670auto_static.conf
-export
+export $(shell sed 's/=.*//' $(srctree)/techpack/audio/config/sdm670auto_static.conf)
 endif
 ifeq ($(CONFIG_ARCH_SDXPOORWILLS), y)
 include $(srctree)/techpack/audio/config/sdxpoorwillsauto.conf
-export
+export $(shell sed 's/=.*//' $(srctree)/techpack/audio/config/sdxpoorwillsauto.conf)
 endif
 ifeq ($(CONFIG_ARCH_SM6150), y)
 include $(srctree)/techpack/audio/config/sm6150auto.conf
-export
+export $(shell sed 's/=.*//' $(srctree)/techpack/audio/config/sm6150auto.conf)
 endif
 ifeq ($(CONFIG_ARCH_SDMMAGPIE), y)
 include $(srctree)/techpack/audio/config/sm6150auto.conf
-export
+export $(shell sed 's/=.*//' $(srctree)/techpack/audio/config/sm6150auto.conf)
 endif
 ifeq ($(CONFIG_ARCH_SM8150), y)
 include $(srctree)/techpack/audio/config/sm8150auto.conf
-export
+export $(shell sed 's/=.*//' $(srctree)/techpack/audio/config/sm8150auto.conf)
 endif
 ifeq ($(CONFIG_ARCH_SDMSHRIKE), y)
 include $(srctree)/techpack/audio/config/sm8150auto.conf
-export
+export $(shell sed 's/=.*//' $(srctree)/techpack/audio/config/sm8150auto.conf)
 endif
 
 # Use USERINCLUDE when you must reference the UAPI directories only.
@@ -40,12 +40,15 @@ USERINCLUDE     += \
 # Needed to be compatible with the O= option
 LINUXINCLUDE    += \
                 -I$(srctree)/techpack/audio/include/uapi \
+                -I$(srctree)/techpack/audio/include/elliptic \
                 -I$(srctree)/techpack/audio/include
 
+#for mius start
 ifeq ($(CONFIG_US_PROXIMITY), y)
 LINUXINCLUDE    += \
                 -I$(srctree)/techpack/audio/include/mius
 endif
+#for mius end
 
 ifeq ($(CONFIG_ARCH_SDM845), y)
 LINUXINCLUDE    += \

@@ -216,13 +216,7 @@ static enum tfa_error tfa98xx_tfa_start(struct tfa98xx *tfa98xx, int next_profil
 	}
 
 
-	/*[nxp34663] CR: support 16bit/24bit/32bit audio data. begin*/
-#ifdef __KERNEL__
 	err = tfa_dev_start(tfa98xx->tfa, next_profile, vstep, tfa98xx->pcm_format);
-#else
-	err = tfa_dev_start(tfa98xx->tfa, next_profile, vstep);
-#endif
-	/*[nxp34663] CR: support 16bit/24bit/32bit audio data. end*/
 
 	pr_debug("%s  after performed tfa_dev_start return (%d)\n", __func__, err);
 
@@ -392,6 +386,16 @@ static void tfa98xx_inputdev_unregister(struct tfa98xx *tfa98xx)
 {
 	__tfa98xx_inputdev_check_register(tfa98xx, true);
 }
+
+#ifdef CONFIG_TFA_NON_DSP_SOLUTION
+extern int send_tfa_cal_apr(void *buf, int cmd_size, bool bRead);
+#else
+int send_tfa_cal_apr(void *buf, int cmd_size, bool bRead)
+{
+	pr_info("this function is empty!!!\n");
+	return 0;
+}
+#endif
 
 #ifdef CONFIG_DEBUG_FS
 /* OTC reporting
@@ -771,7 +775,7 @@ static ssize_t tfa98xx_dbgfs_rpc_read(struct file *file,
 	mutex_lock(&tfa98xx->dsp_lock);
 
 	if (tfa98xx->tfa->is_probus_device) {
-		error = 0;
+		error = send_tfa_cal_apr(buffer, count, true);
 	} else {
 		error = dsp_msg_read(tfa98xx->tfa, count, buffer);
 	}
@@ -822,7 +826,7 @@ static ssize_t tfa98xx_dbgfs_rpc_send(struct file *file,
 
 	if (tfa98xx->tfa->is_probus_device) {
 		mutex_lock(&tfa98xx->dsp_lock);
-		error = 0;
+		error = send_tfa_cal_apr(msg_file->data, msg_file->size, false);
 		if (error != Tfa98xx_Error_Ok) {
 			pr_debug("[0x%x] dsp_msg error: %d\n", tfa98xx->i2c->addr, error);
 			err = -EIO;
@@ -1520,7 +1524,7 @@ static int tfa98xx_get_cal_ctl(struct snd_kcontrol *kcontrol,
 	return 0;
 }
 
-#ifdef TFA_NON_DSP_SOLUTION
+#ifdef CONFIG_TFA_NON_DSP_SOLUTION
 static atomic_t g_bypass;
 static atomic_t g_Tx_enable;
 extern int send_tfa_cal_set_bypass(void *buf, int cmd_size);
@@ -1729,7 +1733,7 @@ static int tfa98xx_create_controls(struct tfa98xx *tfa98xx)
 	ret = snd_soc_add_codec_controls(tfa98xx->codec, tfa98xx_controls, mix_index);
 	pr_info("create tfa98xx_controls  ret=%d", ret);
 
-#ifdef TFA_NON_DSP_SOLUTION
+#ifdef CONFIG_TFA_NON_DSP_SOLUTION
 	ret = snd_soc_add_codec_controls(tfa98xx->codec, tfa987x_algo_controls, ARRAY_SIZE(tfa987x_algo_controls));
 	pr_info("create tfa987x_algo_controls  ret=%d", ret);
 #endif
@@ -2581,9 +2585,7 @@ static void tfa98xx_interrupt(struct work_struct *work)
 
 		mutex_lock(&tfa98xx->dsp_lock);
 
-		/*[nxp34663] CR: support 16bit/24bit/32bit audio data. begin*/
 		start_triggered = tfa_plop_noise_interrupt(tfa98xx->tfa, tfa98xx->profile, tfa98xx->vstep, tfa98xx->pcm_format);
-		/*[nxp34663] CR: support 16bit/24bit/32bit audio data. end*/
 
 		/* Only enable when the return value is 1, otherwise the interrupt is triggered twice */
 		if(start_triggered)
@@ -2752,14 +2754,13 @@ static int tfa98xx_hw_params(struct snd_pcm_substream *substream,
 	/* update to new rate */
 	tfa98xx->rate = rate;
 
-	/*[nxp34663] CR: support 16bit/24bit/32bit audio data. begin*/
+	/* update pcm format */
 	tfa98xx->pcm_format = snd_pcm_format_width(params_format(params));
-	/*[nxp34663] CR: support 16bit/24bit/32bit audio data. end*/
 
 	return 0;
 }
 
-#ifdef TFA_NON_DSP_SOLUTION
+#ifdef CONFIG_TFA_NON_DSP_SOLUTION
 extern int send_tfa_cal_in_band(void *buf, int cmd_size);
 static uint8_t bytes[3*3+1] = {0};
 
@@ -2865,7 +2866,7 @@ static int tfa98xx_mute(struct snd_soc_dai *dai, int mute, int stream)
 		if (tfa98xx->dsp_fw_state != TFA98XX_DSP_FW_OK)
 			return 0;
 		mutex_lock(&tfa98xx->dsp_lock);
-#ifdef TFA_NON_DSP_SOLUTION
+#ifdef CONFIG_TFA_NON_DSP_SOLUTION
 		tfa98xx_send_mute_cmd();
 		msleep(60);
 #endif
@@ -2875,7 +2876,7 @@ static int tfa98xx_mute(struct snd_soc_dai *dai, int mute, int stream)
 	} else {
 		if (stream == SNDRV_PCM_STREAM_PLAYBACK) {
 			tfa98xx->pstream = 1;
-#ifdef TFA_NON_DSP_SOLUTION
+#ifdef CONFIG_TFA_NON_DSP_SOLUTION
 			if (tfa98xx->tfa->is_probus_device) {
 				tfa98xx_adsp_send_calib_values();
 			}
@@ -3437,7 +3438,7 @@ static ssize_t tfa98xx_misc_device_rpc_read(struct file *file, char __user *user
 
 	mutex_lock(&tfa98xx->dsp_lock);
 
-	ret = 0;
+	ret = send_tfa_cal_apr(buffer, count, true);
 
 	mutex_unlock(&tfa98xx->dsp_lock);
 	if (ret) {
@@ -3476,7 +3477,7 @@ static ssize_t tfa98xx_misc_device_rpc_write(struct file *file, const char __use
 
 	mutex_lock(&tfa98xx->dsp_lock);
 
-	err = 0;
+	err = send_tfa_cal_apr(buffer, count, false);
 	if (err) {
 		pr_err("[0x%x] dsp_msg error: %d\n", tfa98xx->i2c->addr, err);
 	}
@@ -3519,13 +3520,13 @@ enum Tfa98xx_Error tfa98xx_read_data_from_hostdsp(struct tfa_device *tfa,
 	buffer[nr++] = module_id + 128;
 	buffer[nr++] = param_id;
 
-	error = 0;
+	error = send_tfa_cal_apr(buffer, sizeof(buffer), false);
 	if (error)
 		return Tfa98xx_Error_Bad_Parameter;
 	mdelay(5);
 
 	/* read the data from the dsp */
-	error = 0;
+	error = send_tfa_cal_apr(data, sizeof(num_bytes), true);
 	if (error)
 		return Tfa98xx_Error_Bad_Parameter;
 	return Tfa98xx_Error_Ok;
@@ -3541,7 +3542,7 @@ static int tfa98xx_read_memtrack_data(struct tfa98xx *tfa98xx, int *pLivedata)
 
 	enum TFA_DEVICE_TYPE pri_devcie = TFA_DEVICE_TYPE_MAX;
 	enum TFA_DEVICE_TYPE sec_devcie = TFA_DEVICE_TYPE_MAX;
-	/* TFA device memory map. */
+	/* TFA device memory map. */        
 	struct livedata_cfg livedata_table[TFA_DEVICE_TYPE_MAX][MEMTRACK_ITEM_MAX] = {
 		/* for TFA9894 device */
 		{
@@ -3639,6 +3640,7 @@ static int tfa98xx_read_memtrack_data(struct tfa98xx *tfa98xx, int *pLivedata)
 		pr_info("send command to dsp to build memtrack structure.\n");
 		/* send command to host dsp. */
         if (tfa98xx->tfa->is_probus_device) {
+            send_tfa_cal_apr(buffer, item_bytes + 6, false);
 			send_to_dsp_count = 0;
 			mdelay(5);
         } else {
@@ -3655,7 +3657,7 @@ static int tfa98xx_read_memtrack_data(struct tfa98xx *tfa98xx, int *pLivedata)
 			} else {
 				ret = tfa_dsp_cmd_id_write_read(tfa98xx->tfa, MODULE_FRAMEWORK, FW_PAR_ID_GET_MEMTRACK, item_bytes+3, buffer);
 			}
-
+			
 			pr_info("read memtrack data. ret=%d\n", ret);
 
 			if (Tfa98xx_Error_Ok == ret) {
@@ -3822,16 +3824,16 @@ static const struct tfa98xx_miscdevice_info miscdevice_info[MISC_DEVICE_MAX] = {
 		.operations.owner = THIS_MODULE,
 		.operations.open = tfa98xx_misc_device_control_open,
 		.operations.unlocked_ioctl = tfa98xx_misc_device_control_ioctl,
-#ifdef CONFIG_COMPAT
+#ifdef CONFIG_COMPAT		
 		.operations.compat_ioctl = tfa98xx_misc_device_control_compat_ioctl,
-#endif
+#endif		
 	},
 };
 
 int tfa98xx_init_misc_device(struct tfa98xx *tfa98xx)
 {
 	int ret = 0;
-
+		
 	pr_info("entry\n");
 	if (NULL == tfa98xx) {
 		pr_err("tfa98xx is NULL.\n");
@@ -3856,7 +3858,7 @@ int tfa98xx_init_misc_device(struct tfa98xx *tfa98xx)
 	if (ret) {
 		pr_err("tfa98xx_init_misc_device: register misc device [%s] failed\n", tfa98xx->tfa98xx_rw.name);
 	}
-
+	
 	/* create device node "tfa_rpc_X" for switching profile. */
 	tfa98xx->tfa98xx_rpc.minor = MISC_DYNAMIC_MINOR;
 	tfa98xx->tfa98xx_rpc.name = miscdevice_info[MISC_DEVICE_TFA98XX_RPC].devicename;
@@ -3901,7 +3903,7 @@ void tfa98xx_remove_misc_device(struct tfa98xx *tfa98xx)
 	misc_deregister(&tfa98xx->tfa98xx_rw);
 	misc_deregister(&tfa98xx->tfa98xx_rpc);
 	misc_deregister(&tfa98xx->tfa98xx_profile);
-	misc_deregister(&tfa98xx->tfa98xx_control);
+	misc_deregister(&tfa98xx->tfa98xx_control);	
 	return;
 }
 
@@ -4254,3 +4256,4 @@ module_exit(tfa98xx_i2c_exit);
 
 MODULE_DESCRIPTION("ASoC TFA98XX driver");
 MODULE_LICENSE("GPL");
+

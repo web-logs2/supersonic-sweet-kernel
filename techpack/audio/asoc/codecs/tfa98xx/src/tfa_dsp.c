@@ -278,7 +278,7 @@ void tfa_set_query_info(struct tfa_device *tfa)
 		tfa->spkr_count = 1;
 		tfa->is_probus_device = 1;
 		tfa->daimap = Tfa98xx_DAI_TDM;
-		tfa9874_ops(&tfa->dev_ops); /* register device operations */
+		tfa9874_ops(&tfa->dev_ops); /* register device operations */     
 		break;
 	case 0x88:
 		/* tfa9888 */
@@ -548,7 +548,7 @@ enum Tfa98xx_Error tfa98xx_dsp_system_stable(struct tfa_device *tfa, int *ready)
 {
 	enum Tfa98xx_Error error = (tfa->dev_ops.dsp_system_stable)(tfa, ready);
 	pr_debug("%s error=%d  ready=%d\n", __func__, error, *ready);
-	return error;
+	return error; 
 }
 
 /* the ops wrapper for tfa98xx_dsp_system_stable */
@@ -1102,9 +1102,9 @@ tfa_dsp_patch(struct tfa_device *tfa, int patchLength,
 	if (Tfa98xx_Error_Ok != error) {
 		return error;
 	}
-
+	
 	/* for non-dsp solution, we don't need to check ACS. */
-	if (tfa->is_probus_device == 0) {
+	if (tfa->is_probus_device == 0) {	
 		tfa98xx_dsp_system_stable(tfa, &status);
 		if (!status)
 			return Tfa98xx_Error_NoClock;
@@ -2515,7 +2515,7 @@ enum Tfa98xx_Error show_current_state(struct tfa_device *tfa)
 	if (tfa->tfa_family == 2
 #ifndef __KERNEL__
 	 && tfa->verbose
-#endif
+#endif	
 	) {
 		manstate = TFA_GET_BF(tfa, MANSTATE);
 		if (manstate < 0)
@@ -2980,13 +2980,7 @@ enum Tfa98xx_Error tfaRunWaitCalibration(struct tfa_device *tfa, int *calibrateD
  * for calibrating or akoustic shock handling use the tfa98xxCalibration function.
  */
 
-/*[nxp34663] CR: support 16bit/24bit/32bit audio data. begin*/
-#ifdef __KERNEL__
 enum tfa_error tfa_dev_start(struct tfa_device *tfa, int next_profile, int vstep, u8 pcm_format)
-#else
-enum tfa_error tfa_dev_start(struct tfa_device *tfa, int next_profile, int vstep)
-#endif
-/*[nxp34663] CR: support 16bit/24bit/32bit audio data. end*/
 
 {
 	enum Tfa98xx_Error err = Tfa98xx_Error_Ok;
@@ -3012,8 +3006,6 @@ enum tfa_error tfa_dev_start(struct tfa_device *tfa, int next_profile, int vstep
 			goto error_exit;
 	}
 
-	/*[nxp34663] CR: support 16bit/24bit/32bit audio data. begin*/
-#ifdef __KERNEL__
 	if ((2 == tfa->tfa_family) && (tfa->daimap & Tfa98xx_DAI_TDM)) {
 		//TFA_SET_BF(tfa, TDMSRCMAP, 2);	/*the TDMSRCMAP should be set in cnt file.*/
 		/* we should remove below settings from cnt file, otherwise will be overwrite by cnt file later.*/
@@ -3030,8 +3022,6 @@ enum tfa_error tfa_dev_start(struct tfa_device *tfa, int next_profile, int vstep
 			goto error_exit;
 		}
 	}
-#endif
-	/*[nxp34663] CR: support 16bit/24bit/32bit audio data. end*/
 
 	if ( tfa->bus != 0 )  { /* non i2c  */
 #ifndef __KERNEL__
@@ -3116,7 +3106,7 @@ error_exit:
 		pr_err("TFA98xx Error code is %d\n", err);
 		return tfa_error_max;
 	}
-
+	
 	return tfa_error_ok;
 }
 
@@ -3154,7 +3144,7 @@ error_exit:
 		pr_err("TFA98xx Error code is %d\n", err);
 		return tfa_error_max;
 	}
-
+	
 	return tfa_error_ok;
 }
 
@@ -3291,7 +3281,7 @@ enum Tfa98xx_Error tfa_dsp_get_calibration_impedance(struct tfa_device *tfa)
 			/* dsp inside of TFA device. */
 			calibrateDone = 1;
 		}
-
+		
 		/* SoftDSP interface differs from hw-dsp interfaces */
 		if(tfa->is_probus_device && tfa->cnt->ndev > 1) {
 			spkr_count = tfa->cnt->ndev;
@@ -3357,7 +3347,7 @@ int tfa_dev_set_swvstep(struct tfa_device *tfa, unsigned short new_value)
 }
 
 /*
-	function overload for MTPB
+	function overload for MTPB 
  */
 int tfa_dev_get_mtpb(struct tfa_device *tfa)
 {
@@ -3908,11 +3898,7 @@ enum Tfa98xx_Error tfa_status(struct tfa_device *tfa)
 }
 
 
-#ifdef __KERNEL__
 int tfa_plop_noise_interrupt(struct tfa_device *tfa, int profile, int vstep, u8 pcm_format)
-#else
-int tfa_plop_noise_interrupt(struct tfa_device *tfa, int profile, int vstep)
-#endif
 {
 	enum tfa_error err;
 	int no_clk=0;
@@ -3929,11 +3915,7 @@ int tfa_plop_noise_interrupt(struct tfa_device *tfa, int profile, int vstep)
 			/* Clock is lost. Set I2CR to remove POP noise */
 			pr_info("No clock detected. Resetting the I2CR to avoid pop on 72! \n");
 
-#ifdef __KERNEL__
 			err = tfa_dev_start(tfa, profile, vstep, pcm_format);
-#else
-			err = tfa_dev_start(tfa, profile, vstep);
-#endif
 			if (err != tfa_error_ok) {
 				pr_err("Error loading i2c registers (tfa_dev_start), err=%d\n", err);
 			} else {
