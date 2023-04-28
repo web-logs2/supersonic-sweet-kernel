@@ -220,7 +220,7 @@ And public attribution of xiaomi platforms(like F3 and so and)
 		reg = <0x5A>;
 		reset-gpio = <&tlmm 4 0>;
 		irq-gpio = <&pm6150l_gpios  10 0>;
-		vib_f0_pre = < 2050 >;
+		vib_f0_pre = < 2080 >;
 		vib_f0_cali_percen = < 7 >;
 		vib_cont_drv_lev = < 106 >;
 		vib_cont_drv_lvl_ov = < 155 >;
@@ -380,7 +380,6 @@ And public attribution of xiaomi platforms(like F3 and so and)
 	qcom,shutdown-delay-enable;
 	qcom,tcss-enable;
 	qcom,tcss-entry-soc = <90>;
-	qcom,bass-enable;
 
 	qcom,soc_decimal_rate = <
 		0  32
@@ -501,6 +500,7 @@ And public attribution of xiaomi platforms(like F3 and so and)
 };
 
 &usb0 {
+    qcom,pm-qos-latency = <67>; /* CPU6-WFI-LVL latency +1 */
 	dwc3@a600000 {
 		usb-phy = <&qusb_phy0>, <&usb_nop_phy>;
 		maximum-speed = "high-speed";
@@ -624,28 +624,6 @@ And public attribution of xiaomi platforms(like F3 and so and)
 		qcom,supply-disable-load = <80>;
 		qcom,supply-pre-off-sleep = <10>;
 	};
-};
-
-&dsi_xiaomi_f4_41_06_0a_fhd_cmd {
-	qcom,panel-supply-entries = <&dsi_panel_pwr_supply_labibb_amoled>;
-	qcom,mdss-dsi-bl-pmic-control-type = "bl_ctrl_dcs";
-	qcom,mdss-dsi-bl-min-level = <2>;
-	qcom,mdss-dsi-bl-max-level = <2047>;
-	qcom,mdss-dsi-mode-sel-gpio-state = "single_port";
-	//qcom,panel-mode-gpio = <&tlmm 7 0>;
-	qcom,platform-te-gpio = <&tlmm 10 0>;
-	qcom,platform-reset-gpio = <&pm6150l_gpios 9 0>;
-};
-
-&dsi_xiaomi_f4_36_02_0b_fhd_cmd {
-	qcom,panel-supply-entries = <&dsi_panel_pwr_supply_labibb_amoled>;
-	qcom,mdss-dsi-bl-pmic-control-type = "bl_ctrl_dcs";
-	qcom,mdss-dsi-bl-min-level = <2>;
-	qcom,mdss-dsi-bl-max-level = <2047>;
-	qcom,mdss-dsi-mode-sel-gpio-state = "single_port";
-	//qcom,panel-mode-gpio = <&tlmm 7 0>;
-	qcom,platform-te-gpio = <&tlmm 10 0>;
-	qcom,platform-reset-gpio = <&pm6150l_gpios 9 0>;
 };
 
 &dsi_k6_38_0c_0a_fhd_dsc_video {
