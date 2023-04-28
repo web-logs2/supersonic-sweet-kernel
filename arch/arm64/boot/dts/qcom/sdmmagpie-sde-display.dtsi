@@ -477,7 +477,7 @@
 		qcom,dsi-panel = <&dsi_k9a_42_02_0b_mp_dsc_cmd>;
 	};
 
-	dsi_k6_38_0c_0a_fhd_dsc_video_display: qcom,dsi-display@32 {
+	dsi_k6_38_0c_0a_fhd_dsc_video_display: qcom,dsi-display@34 {
 
 		label = "dsi_k6_38_0c_0a_fhd_dsc_video_display";
 		qcom,display-type = "primary";
